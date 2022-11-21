@@ -1,10 +1,14 @@
 ---
-title: Reproducibility of hierarchical modeling analyses in ecology
+title: "Reproducibility of hierarchical modeling analyses in ecology: pregistration"
 author: Kenneth F. Kellner and Jerrold L. Belant
 date: 21 November 2022
 output: pdf_document
 bibliography: references.bib
 csl: plos.csl
+header-includes:
+    - \usepackage{setspace}\doublespacing
+    - \usepackage[left]{lineno}
+    - \linenumbers
 ---
 
 # Introduction
@@ -26,21 +30,18 @@ Our study will build on previous similar work in ecology (e.g. [@Archmiller_2020
 
 ## Objectives and hypotheses
 
-In addition to summary statistics, we plan to model two response variables, each with an associated set of hypotheses.
+Objective 1: Determine the proportion of papers for which it is possible attempt to reproduce the results. That is, are both data and code for a given paper available?
 
-First, can we attempt to reproduce the results, i.e., are both data and code for a given paper available (yes/no)?
+* Journals are increasingly requiring authors to share data and code. Thus, year (2018-2022) will have a **positive effect** on availability of both data and code
+* Articles in more selective/higher impact journals (as measured by impact factor) will be **more likely** to have code and data available.
+* Open access papers should be **more likely** to have code and data available.
+* Papers that use a Bayesian approach typically need to code custom models; there is a historical norm of sharing the model code in these cases. Thus we expect papers that use Bayesian modeling tools such as BUGS, Nimble, and Stan to be **more likely** to make both code and data available.
 
-* Journals are increasingly requiring authors to share data and code. Thus, year (2018-2022) will have a positive effect on availability of both data and code
-* Articles in more selective/higher impact journals (as measured by impact factor) will be more likely to have code and data available.
-* Open access papers should be more likely to have code and data available.
-* Papers that use a Bayesian approach typically need to code custom models; there is a historical norm of sharing the model code in these cases, thus we expect papers that use a Bayesian approach to be more likely to make both code and data available.
+Objective 2: For papers with both code and data available, are we able to reproduce the results (yes/partially/no)?
 
-Second, given that the code and data are available, can we reproduce the results in the paper (yes/partially/no)?
-
-* We expect that the longer and more complex an analysis (as measured crudely in lines of code), the less likely we will be to successfully reproduce it. The more code you have, the more chances there are to introduce errors.
-* We predict that we will be less likely to reproduce results from code shared in the form of PDFs/Word documents than shared as appropriate text files (.R, etc.). Changing the format or copying and pasting code is likely to introduce errors. Articles that use a specific tool designed for reproducibility, such as {Rmarkdown} [@Allaire_2022], should be the most likely to be run successfully.
-* Code that is adequately commented should be more likely to run successfully, since it may indicate that authors worked through the code carefully line by line and confirmed it did what it said it was doing.
-
+* We expect that the longer and more complex an analysis (as measured crudely in lines of code), the **less likely** we will be to successfully reproduce it. The more code you have, the more chances there are to introduce errors.
+* We predict that we will be **less likely** to reproduce results from code shared in the form of PDFs/Word documents than shared as appropriate text files (.R, etc.). Changing the format or copying and pasting code is likely to introduce errors. Articles that use a specific tool designed for reproducibility, such as {Rmarkdown} [@Allaire_2022], should be the most likely to be run successfully.
+* Code that is adequately commented should be **more likely** to run successfully, since it may indicate that authors worked through the code carefully line by line and confirmed it did what it said it was doing.
 
 # Methods
 
@@ -89,41 +90,47 @@ We will use the latest version of software packages unless a certain version is 
 Papers that use proprietary software or software that is no longer available to download will not be tested.
 We anticipate all, or the vast majority of, code will involve R software.
 We will not make any adjustments to code, even to fix minor issues, except to correctly specify file paths of downloaded data.
-For analyses or simulations that we determine will take longer than a couple hours to run on an average laptop computer, we will attempt to run an abbreviated version (e.g., fewer MCMC iterations) to at least confirm the code runs and produces output.
-Such studies will not be included in the analysis described below.
-If even this is not possible, the study will be removed from the dataset.
-This may introduce some bias against Bayesian analyses or big simulation studies, but we simply don't have unlimited run time.
 
 For each analysis we will record (1) information about the code, such as the file format and if it is well-commented; (2) if the code runs as written; (3) if the code appears to cover all, or only some, of the results presented in the paper; (4) if the numerical results we obtain match or partially match (within rounding error) the results reported in the paper; (5) if figure code is available and resulting figures are similar to the figures in the paper; and (6) if the general conclusions (significance, direction of effect, etc.) are similar between our results and the results reported in the paper.
 Note that we do not plan to try to determine if the code is implemented *correctly*, just if it runs and produces the results seen in the paper.
 A second author will repeat this process with a subset of the papers, in order to assess potential bias by the primary data collector (KFK).
 In the final dataset we will share with the paper, we plan on anonymizing the author lists and titles of the papers.
 
+## Excluding data and stopping rules
+
+We expect some analyses will take a very long time to run on an average laptop computer, for example simulation studies or Bayesian models with many slow MCMC iterations.
+In these cases, we will attempt to run an abbreviated version (e.g., fewer MCMC iterations) to confirm the code runs and produces output.
+Since the results from such an abbreviated analysis would not be a fair assessment of reproducibility, these studies will be excluded from further analysis.
+This may introduce some bias against Bayesian analyses or big simulation studies, but we simply don't have unlimited run time.
+
+After reaching a maximum sample size of 100 analyses from papers with both code and data available, we will stop.
+We may adjust this sample size if the process of running analyses takes more or less time than expected, but we will not examine the data in any way before making this determination.
+
+If we are unable to find a minimum of 30 papers with both code and data available, we will randomly add additional papers from journals that had > 30 relevant papers available until we reach this threshold.
+
 # Analysis
 
-We will report extensive summary statistics, including overall proportion of articles that have code and data available, and proportion of these with analyses that reproduce partially and fully.
+We will report summary statistics, including overall proportion of articles that have code and data available, and proportion of these with analyses that reproduce partially and fully.
 We will also report a breakdown by year, the frequency of different software packages used, etc.
 
+## Objective 1
+
+The response variable will be binary: 1 if a paper had both code and data available, and 0 if it did not.
 We will model the proportion of papers with both code and data available using a generalized linear mixed model (GLMM) with a logit link function.
 We will fit a single model with covariates for year, journal impact factor, open access status, and if the paper uses a Bayesian framework, corresponding to our hypotheses.
 
-For probability of reproducibility, the response will have two levels: either not or partially reproducible, and fully reproducible.
-Covariates will include total lines of code, code format (PDF/Word, text file, or Rmarkdown and similar), and whether the code is adequately commented.
+## Objective 2
 
-All models will include random intercepts by journal, and we will conclude that a given covariate has a significant effect on the response if the 95% confidence interval around the corresponding slope parameter does not contain 0.
+The response variable will also be binary: 1 if we determined a paper to be fully reproducible, 0 if not or only partially reproducible.
+We will fit a similar GLMM with a logit link to this response variable.
+Covariates will include total lines of code, code format (PDF/Word, text file, or Rmarkdown and similar), and whether the code is adequately commented (yes/no), again corresponding to our hypotheses.
+
+## Both objectives
+
+Both models will include random intercepts by journal, and we will conclude that a given covariate has a significant effect on the response if the 95% credible interval around the corresponding slope parameter does not contain 0.
 All continuous covariates will be standardized to have a mean of 0 and a standard deviation of 1 prior to analysis.
+We do not expect correlation in our covariates, but we will test for this before running models and if two covariates have a correlation coefficient > 0.7, we will retain only one in the model.
 We plan to conduct all analyses in a Bayesian framework using the {rstanarm} R package [@Goodrich_2020].
-
-# Anticipated problems and planned solutions
-
-If in the initial paper search we do not find at least 30 papers with code and data available, we will randomly add additional papers from journals that had > 30 relevant articles available.
-
-We anticipate that it could take a very long time to work through all the available code. Therefore:
-
-* If we get more than 100 papers with code and data available, we will randomly order all papers and attempt to reproduce only the first 100. If we find that the process of running the code is moving faster than expected we will remove this limit.
-
-* If the process of handling and running the code takes significantly longer than expected, we will attempt to reproduce only the first 50 papers.
-
-We will not base any of these decisions on the results we are getting and will not look at the final dataset until we move on to our analysis.
+Model fit will be assessed using posterior predictive checks, and model predictive accuracy using the receiver operating characteristic (ROC) curve.
 
 # References
