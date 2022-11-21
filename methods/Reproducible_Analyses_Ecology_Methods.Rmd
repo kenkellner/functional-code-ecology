@@ -1,0 +1,129 @@
+---
+title: Reproducibility of hierarchical modeling analyses in ecology
+author: Kenneth F. Kellner and Jerrold L. Belant
+date: 21 November 2022
+output: pdf_document
+bibliography: references.bib
+csl: plos.csl
+---
+
+# Introduction
+
+Public archival of analysis code, in addition to associated data, is increasingly required or encouraged by scientific journals upon paper acceptance.
+Code sharing has numerous benefits, including increased transparency of methods, facilitation of future studies, and enabling complete reproduction of a paper's results [@Mislan_2016; @Culina_2020].
+At present, however, there are few standards or checks on shared code, and in our experience it is rarely examined by reviewers.
+This leads to two questions: how common is code sharing in recent papers, and how accurate, functional, and reproducible are public code archives when they do exist?
+
+Researchers in several disciplines have recently attempted to answer one or both of these questions, including psychology [@Obels_2020; @Hardwicke_2021; @Laurinavichyute_2022], neuroscience [@Xiong_2022], pharmacology [@Kirouac_2019], physics [@Stodden_2018], geographic information systems [@Nust_2018], and ecology [@Archmiller_2020; @Culina_2020; @Poongavanan_2021].
+In general, past studies found that the percentage of papers that share code are low on average (range 4-58%), but this number is increasing over time as more journals require it [@Culina_2020].
+On the other hand, the proportion of these papers for which the shared code and data can be said to replicate the analysis can be significantly lower, even with aid from the original authors [@Kirouac_2019; @Archmiller_2020; @Poongavanan_2021; @Seibold_2021; @Xiong_2022].
+The value of sharing code is questionable when running the code is not possible due to errors or when the code runs but does not reproduce the results in the paper.
+Increasing our understanding of the scope of this problem, as well as potential explanatory factors, would promote reproducibility.
+
+We plan a similar study of the ecology and wildlife conservation literature, specifically focusing on papers that estimate species distribution or abundance via hierarchical modeling (for an overview see @Kery_2016).
+We chose to constrain our study in this way for two reasons: first, estimation of these parameters is a key goal of many ecological studies; and second, limiting the included papers to a common set of objectives and analyses should make the process of testing shared code more tractable and consistent.
+Our study will build on previous similar work in ecology (e.g. [@Archmiller_2020; @Poongavanan_2021]) by covering a wider range of journals and with a larger sample size.
+
+## Objectives and hypotheses
+
+In addition to summary statistics, we plan to model two response variables, each with an associated set of hypotheses.
+
+First, can we attempt to reproduce the results, i.e., are both data and code for a given paper available (yes/no)?
+
+* Journals are increasingly requiring authors to share data and code. Thus, year (2018-2022) will have a positive effect on availability of both data and code
+* Articles in more selective/higher impact journals (as measured by impact factor) will be more likely to have code and data available.
+* Open access papers should be more likely to have code and data available.
+* Papers that use a Bayesian approach typically need to code custom models; there is a historical norm of sharing the model code in these cases, thus we expect papers that use a Bayesian approach to be more likely to make both code and data available.
+
+Second, given that the code and data are available, can we reproduce the results in the paper (yes/partially/no)?
+
+* We expect that the longer and more complex an analysis (as measured crudely in lines of code), the less likely we will be to successfully reproduce it. The more code you have, the more chances there are to introduce errors.
+* We predict that we will be less likely to reproduce results from code shared in the form of PDFs/Word documents than shared as appropriate text files (.R, etc.). Changing the format or copying and pasting code is likely to introduce errors. Articles that use a specific tool designed for reproducibility, such as {Rmarkdown} [@Allaire_2022], should be the most likely to be run successfully.
+* Code that is adequately commented should be more likely to run successfully, since it may indicate that authors worked through the code carefully line by line and confirmed it did what it said it was doing.
+
+
+# Methods
+
+## Article selection
+
+We selected ten journals which we know from experience publish studies employing hierarchical modeling to estimate distribution and abundance.
+This included both ecology/wildlife-specific journals and so-called mega journals that publish across a wide range of disciplines.
+The final set of journals included 
+Ecology, 
+Journal of Ecology,
+Ecology and Evolution,
+Methods in Ecology and Evolution,
+Ecological Applications,
+Journal of Wildlife Management,
+Ecosphere,
+Scientific Reports,
+PLoS ONE,
+and Conservation Biology.
+
+Using Web of Science ([https://webofknowledge.com](https://webofknowledge.com)), we will search each journal with the following search string: "occupancy OR n-mixture OR capture recapture OR 'distance sampling' OR 'removal sampling'", and constrain the results to years 2018-2022.
+We will export all found records to spreadsheets.
+For each journal, we will then randomly sort the results and began reading the abstracts and skimming the text of each paper.
+We will retain the first 30 entries for each journal that fit our detailed inclusion criteria.
+Our inclusion criteria for an article are: (1) research on plants or animals; (2) applies one of the hierarchical modeling approaches from our search string to estimate distribution or abundance for either simulated or real data.
+A survey of the literature (across multiple disciplines) found a range of 4% - 58% of studies made both data and analysis code available [@Archmiller_2020; @Culina_2020; @Obels_2020; @Hardwicke_2021; @Poongavanan_2021].
+As our study will focus on recent years (2018-2022) and on mainly journals which now strongly encourage or require sharing of data and code, we expect the proportion of studies in our study with both code and data available to fall at least in the middle of this range (~25%).
+Thus we anticipate a starting sample size of at least 75 (30 * 10 * 0.25) studies which we can attempt to reproduce.
+
+## Article assessment
+
+We will examine each selected article, along with associated online materials, and collect several data points.
+First, we will record basic information: the journal, year, and taxonomic group(s) studied.
+Second, we will record information about the analysis; specifically, the model applied, and if available the software used.
+Finally, we will determine if the authors have made the dataset, code, or both available online.
+We do not plan to contact authors to obtain missing data or code, or to ask for help with the analyses; our study is focused just on information that is already available publicly.
+At this stage we will not attempt to determine if the data and/or code are complete, just that they are at least present.
+
+## Reproducing analyses
+
+Code and data will be downloaded from all papers that made it available.
+Only code and data which are directly cited or linked by the paper and associated online supplements will be used.
+We will not reach out to the authors for missing data or try to identify other sources (e.g. unlinked Git repositories).
+Papers with available code and data will be randomly ordered.
+The primary author (KFK) will proceed through the papers in this order one by one, attempting to replicate each analysis, under the following conditions.
+We will use the latest version of software packages unless a certain version is specified by the authors.
+Papers that use proprietary software or software that is no longer available to download will not be tested.
+We anticipate all, or the vast majority of, code will involve R software.
+We will not make any adjustments to code, even to fix minor issues, except to correctly specify file paths of downloaded data.
+For analyses or simulations that we determine will take longer than a couple hours to run on an average laptop computer, we will attempt to run an abbreviated version (e.g., fewer MCMC iterations) to at least confirm the code runs and produces output.
+Such studies will not be included in the analysis described below.
+If even this is not possible, the study will be removed from the dataset.
+This may introduce some bias against Bayesian analyses or big simulation studies, but we simply don't have unlimited run time.
+
+For each analysis we will record (1) information about the code, such as the file format and if it is well-commented; (2) if the code runs as written; (3) if the code appears to cover all, or only some, of the results presented in the paper; (4) if the numerical results we obtain match or partially match (within rounding error) the results reported in the paper; (5) if figure code is available and resulting figures are similar to the figures in the paper; and (6) if the general conclusions (significance, direction of effect, etc.) are similar between our results and the results reported in the paper.
+Note that we do not plan to try to determine if the code is implemented *correctly*, just if it runs and produces the results seen in the paper.
+A second author will repeat this process with a subset of the papers, in order to assess potential bias by the primary data collector (KFK).
+In the final dataset we will share with the paper, we plan on anonymizing the author lists and titles of the papers.
+
+# Analysis
+
+We will report extensive summary statistics, including overall proportion of articles that have code and data available, and proportion of these with analyses that reproduce partially and fully.
+We will also report a breakdown by year, the frequency of different software packages used, etc.
+
+We will model the proportion of papers with both code and data available using a generalized linear mixed model (GLMM) with a logit link function.
+We will fit a single model with covariates for year, journal impact factor, open access status, and if the paper uses a Bayesian framework, corresponding to our hypotheses.
+
+For probability of reproducibility, the response will have two levels: either not or partially reproducible, and fully reproducible.
+Covariates will include total lines of code, code format (PDF/Word, text file, or Rmarkdown and similar), and whether the code is adequately commented.
+
+All models will include random intercepts by journal, and we will conclude that a given covariate has a significant effect on the response if the 95% confidence interval around the corresponding slope parameter does not contain 0.
+All continuous covariates will be standardized to have a mean of 0 and a standard deviation of 1 prior to analysis.
+We plan to conduct all analyses in a Bayesian framework using the {rstanarm} R package [@Goodrich_2020].
+
+# Anticipated problems and planned solutions
+
+If in the initial paper search we do not find at least 30 papers with code and data available, we will randomly add additional papers from journals that had > 30 relevant articles available.
+
+We anticipate that it could take a very long time to work through all the available code. Therefore:
+
+* If we get more than 100 papers with code and data available, we will randomly order all papers and attempt to reproduce only the first 100. If we find that the process of running the code is moving faster than expected we will remove this limit.
+
+* If the process of handling and running the code takes significantly longer than expected, we will attempt to reproduce only the first 50 papers.
+
+We will not base any of these decisions on the results we are getting and will not look at the final dataset until we move on to our analysis.
+
+# References
