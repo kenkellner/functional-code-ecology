@@ -1,7 +1,7 @@
 ---
 title: "Reproducibility of hierarchical modeling analyses in ecology: pregistration"
 author: Kenneth F. Kellner and Jerrold L. Belant
-date: 21 November 2022
+date: 23 November 2022
 output: pdf_document
 bibliography: references.bib
 csl: plos.csl
@@ -64,11 +64,16 @@ and Conservation Biology.
 Using Web of Science ([https://webofknowledge.com](https://webofknowledge.com)), we will search each journal with the following search string: "occupancy OR n-mixture OR capture recapture OR 'distance sampling' OR 'removal sampling'", and constrain the results to years 2018-2022.
 We will export all found records to spreadsheets.
 For each journal, we will then randomly sort the results and began reading the abstracts and skimming the text of each paper.
-We will retain the first 30 entries for each journal that fit our detailed inclusion criteria.
+We will retain the first 50 entries for each journal that fit our detailed inclusion criteria.
 Our inclusion criteria for an article are: (1) research on plants or animals; (2) applies one of the hierarchical modeling approaches from our search string to estimate distribution or abundance for either simulated or real data.
 A survey of the literature (across multiple disciplines) found a range of 4% - 58% of studies made both data and analysis code available [@Archmiller_2020; @Culina_2020; @Obels_2020; @Hardwicke_2021; @Poongavanan_2021].
-As our study will focus on recent years (2018-2022) and on mainly journals which now strongly encourage or require sharing of data and code, we expect the proportion of studies in our study with both code and data available to fall at least in the middle of this range (~25%).
-Thus we anticipate a starting sample size of at least 75 (30 * 10 * 0.25) studies which we can attempt to reproduce.
+As our study will focus on recent years (2018-2022) and on mainly journals which now strongly encourage or require sharing of data and code, we expect the proportion of studies in our study with both code and data available to fall at least in the middle of this range (~30%).
+Thus we anticipate a sample size of at least 150 (50 * 10 * 0.3) studies which we can attempt to reproduce.
+A power analysis indicated that a sample size of 150 studies with both code and data available should be adequate to detect a change in probability of reproducibility of 0.1 (e.g. from 0.2 to 0.3) with power 0.8 (Figure 1). However, we will aim for a sample size of 200.
+
+```{r, echo=FALSE, out.width="60%", fig.cap="Power analysis results", fig.align="center"}
+knitr::include_graphics("power_analysis.png")
+```
 
 ## Article assessment
 
@@ -103,10 +108,10 @@ In these cases, we will attempt to run an abbreviated version (e.g., fewer MCMC 
 Since the results from such an abbreviated analysis would not be a fair assessment of reproducibility, these studies will be excluded from further analysis.
 This may introduce some bias against Bayesian analyses or big simulation studies, but we simply don't have unlimited run time.
 
-After reaching a maximum sample size of 100 analyses from papers with both code and data available, we will stop.
+After reaching a maximum sample size of 200 analyses from papers with both code and data available, we will stop.
 We may adjust this sample size if the process of running analyses takes more or less time than expected, but we will not examine the data in any way before making this determination.
 
-If we are unable to find a minimum of 30 papers with both code and data available, we will randomly add additional papers from journals that had > 30 relevant papers available until we reach this threshold.
+If we are unable to find a minimum of 150 papers with both code and data available, we will randomly add additional papers from journals that had > 50 relevant papers available until we reach this threshold.
 
 # Analysis
 
