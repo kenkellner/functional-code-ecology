@@ -2,3 +2,6 @@
 *.pdf
 *.csl
 *.png
+*.html
+*.docx
+docker-output*

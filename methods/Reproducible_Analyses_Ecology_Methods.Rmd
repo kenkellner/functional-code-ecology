@@ -20,7 +20,7 @@ This leads to two questions: how common is code sharing in recent papers, and ho
 
 Researchers in several disciplines have recently attempted to answer one or both of these questions, including psychology [@Obels_2020; @Hardwicke_2021; @Laurinavichyute_2022], neuroscience [@Xiong_2022], pharmacology [@Kirouac_2019], physics [@Stodden_2018], geographic information systems [@Nust_2018], and ecology [@Archmiller_2020; @Culina_2020; @Poongavanan_2021].
 In general, past studies found that the percentage of papers that share code are low on average (range 4-58%), but this number is increasing over time as more journals require it [@Culina_2020].
-On the other hand, the proportion of these papers for which the shared code and data can be said to replicate the analysis can be significantly lower, even with aid from the original authors [@Kirouac_2019; @Archmiller_2020; @Poongavanan_2021; @Seibold_2021; @Xiong_2022].
+On the other hand, the proportion of these papers for which the shared code and data can be said to replicate the analysis can be significantly lower, even with aid from the original authors [@Kirouac_2019; @Archmiller_2020; @Poongavanan_2021; @Seibold_2021; @Trisovic_2022; @Xiong_2022].
 The value of sharing code is questionable when running the code is not possible due to errors or when the code runs but does not reproduce the results in the paper.
 Increasing our understanding of the scope of this problem, as well as potential explanatory factors, would promote reproducibility.
 

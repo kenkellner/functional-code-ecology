@@ -1,7 +1,6 @@
 # Power analysis to determine adequate sample size
 
 library(glmmTMB)
-library(pbapply)
 logit <- function(x) log(x / (1-x))
 
 set.seed(123)
@@ -34,7 +33,7 @@ run_one_sim <- function(n=100){
   dat <- data.frame(x=x, y=y, group=group)
 
   # Fit model
-  mod <- glmmTMB(y ~ x + (1|group), data=dat, family='binomial')
+  mod <- glmmTMB::glmmTMB(y ~ x + (1|group), data=dat, family='binomial')
   # Extract coefficients
   out <- summary(mod)$coefficients$cond[2,]
   # return TRUE if p < 0.05 and effect size is in the right direction
@@ -44,7 +43,7 @@ run_one_sim <- function(n=100){
 
 # Run a bunch of sims and take the mean to get an estimate of power
 power_estimate <- function(n=100, nsim=100){
-  mean(pbapply::pbsapply(1:nsim, function(x) run_one_sim(n=n)))
+  mean(sapply(1:nsim, function(x) run_one_sim(n=n)))
 }
 
 # Sample sizes to try
@@ -53,6 +52,7 @@ names(sample_sizes) <- sample_sizes
 
 # Run simulations for p1 = 0.2 and p2 = 0.3
 scenario1 <- sapply(sample_sizes, power_estimate, nsim=100)
+stopifnot(all(scenario1 == c(0.19,0.42,0.76,0.88,0.94)))
 
 # Run simulations for p1 = 0.4 and p2 = 0.5
 # Since closer to 0.5, should be lower power
@@ -61,6 +61,7 @@ p2 <- 0.5
 b <- logit(p2) - logit(p1)
 
 scenario2 <- sapply(sample_sizes, power_estimate, nsim=100)
+stopifnot(all(scenario2 == c(0.10,0.24,0.53,0.66,0.77)))
 
 # Plot
 png("power_analysis.png")
