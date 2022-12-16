@@ -1,8 +1,10 @@
 ---
 title: "Reproducibility of hierarchical modeling analyses in ecology: pregistration"
 author: Kenneth F. Kellner and Jerrold L. Belant
-date: 23 November 2022
-output: pdf_document
+date: 16 December 2022
+output: 
+  word_document:
+    reference_docx: word-ref
 bibliography: references.bib
 csl: plos.csl
 header-includes:
@@ -65,13 +67,15 @@ Using Web of Science ([https://webofknowledge.com](https://webofknowledge.com)),
 We will export all found records to spreadsheets.
 For each journal, we will then randomly sort the results and began reading the abstracts and skimming the text of each paper.
 We will retain the first 50 entries for each journal that fit our detailed inclusion criteria.
-Our inclusion criteria for an article are: (1) research on plants or animals; (2) applies one of the hierarchical modeling approaches from our search string to estimate distribution or abundance for either simulated or real data.
+Our inclusion criteria for an article are: (1) research on plants or animals; (2) applies one of the hierarchical modeling approaches from our search string to estimate distribution or abundance for either simulated or real data; (3) has an analysis conducted at least partially using R [@R_2022].
+We expect that the vast majority of papers will use R, or R plus auxiliary software such as JAGS [@Plummer_2003].
+
 A survey of the literature (across multiple disciplines) found a range of 4% - 58% of studies made both data and analysis code available [@Archmiller_2020; @Culina_2020; @Obels_2020; @Hardwicke_2021; @Poongavanan_2021].
 As our study will focus on recent years (2018-2022) and on mainly journals which now strongly encourage or require sharing of data and code, we expect the proportion of studies in our study with both code and data available to fall at least in the middle of this range (~30%).
 Thus we anticipate a sample size of at least 150 (50 * 10 * 0.3) studies which we can attempt to reproduce.
 A power analysis indicated that a sample size of 150 studies with both code and data available should be adequate to detect a change in probability of reproducibility of 0.1 (e.g. from 0.2 to 0.3) with power 0.8 (Figure 1). However, we will aim for a sample size of 200.
 
-```{r, echo=FALSE, out.width="60%", fig.cap="Power analysis results", fig.align="center"}
+```{r, echo=FALSE, out.width="60%", fig.cap="Figure 1. Power analysis results"}
 knitr::include_graphics("power_analysis.png")
 ```
 
@@ -93,12 +97,10 @@ Papers with available code and data will be randomly ordered.
 The primary author (KFK) will proceed through the papers in this order one by one, attempting to replicate each analysis, under the following conditions.
 We will use the latest version of software packages unless a certain version is specified by the authors.
 Papers that use proprietary software or software that is no longer available to download will not be tested.
-We anticipate all, or the vast majority of, code will involve R software.
 We will not make any adjustments to code, even to fix minor issues, except to correctly specify file paths of downloaded data.
 
 For each analysis we will record (1) information about the code, such as the file format and if it is well-commented; (2) if the code runs as written; (3) if the code appears to cover all, or only some, of the results presented in the paper; (4) if the numerical results we obtain match or partially match (within rounding error) the results reported in the paper; (5) if figure code is available and resulting figures are similar to the figures in the paper; and (6) if the general conclusions (significance, direction of effect, etc.) are similar between our results and the results reported in the paper.
 Note that we do not plan to try to determine if the code is implemented *correctly*, just if it runs and produces the results seen in the paper.
-A second author will repeat this process with a subset of the papers, in order to assess potential bias by the primary data collector (KFK).
 In the final dataset we will share with the paper, we plan on anonymizing the author lists and titles of the papers.
 
 ## Excluding data and stopping rules

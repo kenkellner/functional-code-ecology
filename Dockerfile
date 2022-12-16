@@ -21,8 +21,8 @@ RUN Rscript -e 'renv::restore()'
 COPY README.md README.md
 COPY methods methods
 
-# Build HTML version of methods
-RUN cd methods; make Reproducible_Analyses_Ecology_Methods.html
+# Build docx version of methods
+RUN cd methods; make Reproducible_Analyses_Ecology_Methods.docx
 
 # Default to bash terminal when running docker image
 CMD ["bash"]

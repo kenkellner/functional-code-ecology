@@ -1,8 +1,5 @@
-Reproducible_Analyses_Ecology_Methods.pdf: Reproducible_Analyses_Ecology_Methods.Rmd plos.csl power_analysis.png
+Reproducible_Analyses_Ecology_Methods.docx: Reproducible_Analyses_Ecology_Methods.Rmd plos.csl power_analysis.png
 	Rscript -e 'rmarkdown::render("Reproducible_Analyses_Ecology_Methods.Rmd")'
-
-Reproducible_Analyses_Ecology_Methods.html: Reproducible_Analyses_Ecology_Methods.Rmd plos.csl power_analysis.png
-	Rscript -e 'rmarkdown::render("Reproducible_Analyses_Ecology_Methods.Rmd", output_format="html_document")'
 
 power_analysis.png: power_analysis.R
 	Rscript power_analysis.R
