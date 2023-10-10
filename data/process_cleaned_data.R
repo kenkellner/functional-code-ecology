@@ -20,7 +20,7 @@ cleaned <- cleaned[cleaned$UseArticle == 1,]
 cleaned <- cleaned[,c("DOI","Journal","Year")]
 
 # Re-generate ID
-cleaned$ID <- digest(cleaned$DOI)
+cleaned$ID <- sapply(cleaned$DOI, digest)
 
 # Save dataset
 write.csv(cleaned, "final_data.csv", row.names=FALSE)
