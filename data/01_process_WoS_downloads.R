@@ -1,18 +1,16 @@
-# The goal of this file is to clean the raw data and generate 
-# 10 new CSV files (one per journal) from which the final set of 50 candidate
-# articles per journal will be selected
+# The goal of this file is to clean the raw download data from Web of Science 
+# and create 10 new CSV files (one per journal) from which the final set of 
+# 50 candidate articles per journal will be selected
+# The original file downloads were .xls but they were converted first to .csv
 
-suppressMessages(library(readxl))
-suppressMessages(library(digest))
-
-raw_files <- paste0("raw_data/", list.files("raw_data"))
+raw_files <- paste0("WoS_downloads/", list.files("WoS_downloads"))
 
 # Do all files have the same header?
-headers <- lapply(raw_files, function(x) suppressMessages(colnames(read_excel(x))))
+headers <- lapply(raw_files, function(x) colnames(read.csv(x, check.names=FALSE, na.string="")))
 stopifnot(all(sapply(headers, function(x) all(x == headers[[1]]))))
 
 # Read them all in
-raw_data <- lapply(raw_files, function(x) suppressMessages(read_excel(x)))
+raw_data <- lapply(raw_files, function(x) read.csv(x, check.names=FALSE, na.string=""))
 raw_data <- do.call(rbind, raw_data)
 
 keep_cols <- c("Authors", "Article Title", "Source Title", "Volume", 
@@ -34,13 +32,9 @@ raw_data$`Source Title` = toupper(raw_data$`Source Title`)
 journals <- unique(raw_data$`Source Title`)
 stopifnot(length(journals) == 10)
 
-# Assign anon ID with MD5 hash
-raw_data$ID <- as.character(sapply(raw_data$DOI, digest))
-stopifnot(!any(duplicated(raw_data$ID)))
-
 # Rename columns
 names(raw_data) <- c("Authors", "Title", "Journal", "Volume", "StartPage", "EndPage", 
-                    "DOI", "Year", "ID")
+                    "DOI", "Year")
 
 # Scramble order
 set.seed(123)
@@ -55,13 +49,15 @@ raw_data$UseArticle <- NA
 
 # Re-organize columns
 raw_data <- raw_data[,c("DOI", "Journal", "Year", "PlantsOrAnimals", "HierarchModel", "UsesR", "UseArticle",
-                        "Title", "Authors", "Volume", "StartPage", "EndPage", "ID")]
+                        "Title", "Authors", "Volume", "StartPage", "EndPage")]
 
 # Split again by journal
 split_by_journal <- lapply(journals, function(x) raw_data[raw_data$Journal == x,])
 
-dir.create("cleaned_data")
+# Put cleaned files in new folder
+# Next step is to decide if they should be included in the study based on topic
+dir.create("check_for_inclusion")
 
 out <- lapply(split_by_journal, function(x){
-         write.csv(x, paste0("cleaned_data/", gsub(" ", "_", x$Journal[1]), ".csv"))
+         write.csv(x, paste0("check_for_inclusion/", gsub(" ", "_", x$Journal[1]), ".csv"))
 })
