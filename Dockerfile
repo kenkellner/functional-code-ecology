@@ -1,5 +1,5 @@
-# Start with R version 4.3.2
-FROM rocker/r-ver:4.3.2
+# Start with R version 4.3.1 (one version behind for fixed package versions)
+FROM rocker/r-ver:4.3.1
 
 # Install some linux libraries that R packages need
 RUN apt-get update && apt-get install -y pandoc pandoc-citeproc libxt6
@@ -7,12 +7,7 @@ RUN apt-get update && apt-get install -y pandoc pandoc-citeproc libxt6
 # Create a working directory
 WORKDIR /reproducible-analyses
 
-# Install dependencies
-RUN Rscript -e 'install.packages("remotes")'
-COPY install_dependencies.R install_dependencies.R
-RUN Rscript install_dependencies.R 
-
-# Build docx version of methods
+# Build html version of methods
 COPY methods methods
 RUN cd methods; make Reproducible_Analyses_Ecology_Methods.html
 

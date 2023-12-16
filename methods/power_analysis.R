@@ -1,6 +1,6 @@
 # Power analysis to determine adequate sample size
 
-library(MASS, lib.loc="../library")
+library(MASS)
 logit <- function(x) log(x / (1-x))
 
 set.seed(123)
