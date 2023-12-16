@@ -2,15 +2,9 @@
 title: "Reproducibility of hierarchical modeling analyses in ecology: pregistration"
 author: Kenneth F. Kellner and Jerrold L. Belant
 date: 16 December 2022
-output: 
-  word_document:
-    reference_docx: word-ref
 bibliography: references.bib
 csl: plos.csl
-header-includes:
-    - \usepackage{setspace}\doublespacing
-    - \usepackage[left]{lineno}
-    - \linenumbers
+css: pandoc.css
 ---
 
 # Introduction
@@ -75,9 +69,7 @@ As our study will focus on recent years (2018-2022) and on mainly journals which
 Thus we anticipate a sample size of at least 150 (50 * 10 * 0.3) studies which we can attempt to reproduce.
 A power analysis indicated that a sample size of 150 studies with both code and data available should be adequate to detect a change in probability of reproducibility of 0.1 (e.g. from 0.2 to 0.3) with power 0.8 (Figure 1). However, we will aim for a sample size of 200.
 
-```{r, echo=FALSE, out.width="60%", fig.cap="Figure 1. Power analysis results"}
-knitr::include_graphics("power_analysis.png")
-```
+![](power_analysis.png)
 
 ## Article assessment
 

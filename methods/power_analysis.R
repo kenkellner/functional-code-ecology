@@ -1,6 +1,6 @@
 # Power analysis to determine adequate sample size
 
-library(MASS)
+library(MASS, lib.loc="../library")
 logit <- function(x) log(x / (1-x))
 
 set.seed(123)
@@ -80,7 +80,7 @@ scenario3 <- sapply(sample_sizes, power_estimate, nsim=100)
 stopifnot(all(scenario3 == c(0.45,0.67,0.95,1,1)))
 
 # Plot
-png("power_analysis.png")
+png("power_analysis.png", width=7, height=7, units='in', res=300)
 plot(sample_sizes, scenario1,
      type='o', ylim=c(0,1), xlab="Sample size", ylab="Power", col='red')
 lines(sample_sizes, scenario2,

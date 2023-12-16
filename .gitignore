@@ -5,3 +5,4 @@
 *.html
 *.docx
 docker-output*
+library*
