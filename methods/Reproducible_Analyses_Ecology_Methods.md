@@ -1,10 +1,18 @@
 ---
 title: "Reproducibility of hierarchical modeling analyses in ecology: pregistration"
-author: Kenneth F. Kellner and Jerrold L. Belant
-date: 16 December 2022
+author: |
+  | Kenneth F. Kellner and Jerrold L. Belant
+  | Michigan State University
+date: \today
 bibliography: references.bib
 csl: plos.csl
 css: pandoc.css
+header-includes:
+    - \usepackage{setspace}\singlespacing
+    - \usepackage[left]{lineno}
+    - \linenumbers
+    - \usepackage[margin=1in]{geometry}
+template: default.tex
 ---
 
 # Introduction
