@@ -23,10 +23,12 @@ repro$Possible_Reproduce <- NA
 repro$Script <- repro$RMarkdown <- repro$PDF <- repro$Word <- repro$Other <- NA
 # Is code version-controlled (git etc)?
 repro$Version_Control <- NA
-# Is the code reasonably well commented?
+# Is the code reasonably well commented (a judgment call obviously)?
 repro$Commented <- NA
-# Lines of code in total (approximate)
+# Lines of R code in total (approximate)
 repro$Code_Lines <- NA
+# Number of libraries (actually loaded, not necessarily all libaries in the code)
+repro$Libraries <- NA
 # Did you have to adjust the file paths/directories manually?
 repro$Fixed_Filepaths <- NA
 # Does all the code seem to run?

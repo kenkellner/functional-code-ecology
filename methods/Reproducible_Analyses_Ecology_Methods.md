@@ -1,5 +1,5 @@
 ---
-title: "Reproducibility of hierarchical modeling analyses in ecology: pregistration"
+title: "How functional and reproducible is code shared by ecology papers? (Pregistration)"
 author: |
   | Kenneth F. Kellner and Jerrold L. Belant
   | Michigan State University
@@ -20,25 +20,26 @@ template: default.tex
 Public archival of analysis code and associated data is increasingly required or encouraged by scientific journals upon paper acceptance.
 Making both data and code available has numerous reported benefits, including increased transparency of methods, facilitation of future studies, and enabling complete reproduction of a paper's results [@Mislan_2016; @Culina_2020].
 At present, however, there are few standards or checks on publicly available code (hereafter "code"), and in our experience it is rarely examined by reviewers.
-This leads to two questions: how common is code sharing in recent papers, and how accurate, functional, and reproducible are analyses when both code and data area publicly available?
+This leads to three questions: (1) how common is code sharing in recent papers; (2) how functional is the code, and (3) how reproducible are analyses when both code and data area publicly available?
 
 Researchers in several disciplines have recently attempted to answer one or both of these questions, including psychology [@Obels_2020; @Hardwicke_2021; @Laurinavichyute_2022], neuroscience [@Xiong_2022], pharmacology [@Kirouac_2019], physics [@Stodden_2018], geographic information systems [@Nust_2018], and ecology [@Archmiller_2020; @Culina_2020; @Poongavanan_2021].
 Past studies found that the percentage of papers that share code is low on average (range 4-58%), but is increasing over time as more journals require it [@Culina_2020].
-In contrast, the proportion of these papers for which available code and data can be said to replicate the analysis can be substantially lower, even with aid from the original authors [@Kirouac_2019; @Archmiller_2020; @Poongavanan_2021; @Seibold_2021; @Trisovic_2022; @Xiong_2022].
+In contrast, the proportion of these papers for which available code and data can be said to run and replicate the analysis can be substantially lower, even with aid from the original authors [@Kirouac_2019; @Archmiller_2020; @Poongavanan_2021; @Seibold_2021; @Trisovic_2022; @Xiong_2022].
 The value of sharing code is limited when running the code is not possible due to errors or when the code runs but does not reproduce the results in the paper.
 Increasing our understanding of the magnitude of this problem and potential explanatory factors could promote reproducibility.
 
-We plan a study using the ecology and wildlife conservation literature that focuses on papers that estimate species distribution or abundance via hierarchical modeling (for an overview see @Kery_2016).
-We constrained our study to the species abundance and distribution literature because estimation of these parameters is a key goal of many ecological studies and limiting the included papers to a common set of objectives and analyses should make the process of testing shared code more tractable and consistent.
-Our study will build on previous similar work in ecology (e.g. [@Archmiller_2020; @Poongavanan_2021]) by covering a wider range of journals and a larger sample size.
+We plan a study to assess code sharing, code functionality, and reproducibility of results in the ecology literature. 
+We will limit our study to include only papers estimating species abundance and distribution.
+Estimating species abundance and distribution is a key goal of ecology, and a is research focus for the coauthors of this study, which should make running large numbers of analyses more tractable.
+Our study will build on previous similar work in ecology (e.g. [@Archmiller_2020; @Poongavanan_2021]) by covering a wider range of journals and using a larger sample size.
 
 ## Objectives and hypotheses
 
 Objective 1: Determine the proportion of papers for which it is possible to attempt to reproduce the results. That is, are both data and code for a given paper available?
 
-* Articles in journals with data and code availability policies be **more likely** to have code and data available.
+* Papers in journals with data and code availability policies be **more likely** to have code and data available.
 * Awareness of the importance of reproducibility has been increasing [@Hampton_2015; @Fidler_2017; @Powers2019]. Thus, year (2018-2022) will have a **positive effect** on availability of both data and code
-* Articles in higher-impact journals (as measured by impact factor) will be **more likely** to have code and data available.
+* Papers in higher-impact journals (as measured by impact factor) will be **more likely** to have code and data available.
 
 Objective 2: For papers with code and data available, are we able to successfully run the code?
 
@@ -56,7 +57,7 @@ Thus, we have the same predictions for code reproducibility as we do for the pro
 
 # Methods
 
-## Article selection
+## Paper selection
 
 We selected ten journals that publish studies employing hierarchical modeling to estimate species distribution and abundance.
 This includes ecology and wildlife-specific journals, and so-called mega journals that publish a wide range of disciplines.
@@ -84,51 +85,46 @@ A power analysis indicated that a sample size of 150 studies with both code and 
 
 ![](power_analysis.png)
 
-## Article assessment
+## Code and data availability
 
-We will examine each selected article, along with associated online materials, and collect several data points.
-First, we will record basic information: the journal, year, and taxonomic group(s) studied.
-Second, we will record information about the analysis; specifically, the model applied, and if available the software used.
-Finally, we will determine if the authors have made the dataset, code, or both available online.
+We will examine each selected paper, along with associated online materials, and collect several data points.
+First, we will record basic information: the journal and year.
+Second, we will determine if the authors have made the dataset, code, or both available online.
+We will record where the data and analysis code were located (appendix, database, etc.)
 We will not contact authors to obtain missing data or code, or for help with the analyses; our study is focused just on information that is already available publicly.
 At this stage we will not assess whether data and/or code are complete, just that they are at least present.
 
-## Reproducing analyses
+## Running paper code
 
-We will download code and data from each paper that is directly cited or linked to by the paper and associated online supplements.
+For each paper, we will download code and data that is directly cited or linked to by the paper and associated online supplements.
 We will not contact the authors for missing data or try to identify other sources (e.g. unlinked Git repositories).
-We will proceed through the papers in a random order, attempting to run the code and replicate the analysis, under the following conditions:
+We will proceed through the papers in a random order, attempting to run the code under the following conditions:
 
-* We will use the latest version of software packages unless a certain version is specified by the authors.
-* Papers that use proprietary software or software that is no longer available to download will not be tested.
-* We will not make any adjustments to code, even to fix minor issues, except to correctly specify file paths of downloaded data.
-* We will ignore data and analyses not related to estimation of species distribution or abundance.
+* We will use the latest version of R packages unless a certain version is specified by the authors.
+* Code that uses software that is no longer available (e.g. R packages removed from CRAN) will be marked as failing to run, unless the authors accounted for this somehow.
+* Papers that use proprietary software will not be tested.
+* We will not make any adjustments to code, even to fix minor issues, *except* to correctly specify file paths of downloaded data.
+* We will ignore data and analyses not related to estimation of species distribution or abundance, or that do not use R.
 
-For each analysis we will record:
+For each paper we will record:
 
-1. Where the data and analysis code were located (appendix, database, etc.)
-1. Information about the code, such as the number of lines, the file format and if it is well-commented
-2. If the code runs as written
-3. If the results we obtain match the results reported in the paper, within reasonable rounding error.
-
-Note that we do not plan to try to determine if the code is implemented *correctly*, just if it runs and produces the results seen in the paper.
-In the final dataset we will share with the paper, we plan on anonymizing the authors and titles of the papers.
-
-## Excluding data and stopping rules
+* Information about the code, such as the number of lines, the number of R packages used, the file format, and if it includes comments.
+* If the code runs as written.
+* The reasons the code failed to run, if applicable, to the best of our knowledge.
 
 We expect some analyses will take a very long time to run on an average laptop computer, for example simulation studies or Bayesian models with many slow MCMC iterations.
-In these cases, we will attempt to run an abbreviated version (e.g., fewer simulations) to confirm the code runs and produces output.
+In these cases, we will attempt to run an abbreviated version if possible (e.g., fewer simulations) to confirm the code runs and produces output.
 Since the results from such an abbreviated analysis would not be a fair assessment of reproducibility, these studies will be excluded from further analysis.
 This may introduce some bias against Bayesian analyses or big simulation studies.
 
-After reaching a maximum sample size of 200 analyses from papers with both code and data available, we will stop.
-We may adjust this sample size if the process of running analyses takes more or less time than expected, but we will not examine the data in any way before making this determination.
+## Reproducibility
 
-If we are unable to find a minimum of 150 papers with both code and data available, we will randomly add additional papers from journals that had > 50 relevant papers available until we reach this threshold.
+If we are able to run the code, we will record if the results we obtain match the results reported in the paper, within reasonable rounding error.
+Note that we do not plan to try to determine if the code is implemented *correctly*, just if it runs and produces the results seen in the paper.
 
 # Analysis
 
-We will report summary statistics, including overall proportion of articles that have code and data available, and proportion of these with analyses that reproduce partially and fully.
+We will report summary statistics, including overall proportion of papers that have code and data available, proportion of papers with running code, and proportion of papers with reproducible analyses.
 We will also report a breakdown by year, the frequency of different software packages used, etc.
 
 ## Objective 1
@@ -142,7 +138,6 @@ We will fit a single model with covariates for year, journal impact factor, and 
 The response variable will be binary: 1 if the code from a paper runs, 0 if not.
 We will fit a GLMM with a logit link to this response variable.
 Covariates will include total lines of code, number of libraries used, code format (PDF/Word, text file, or Rmarkdown and similar), and whether the code is adequately commented (yes/no), corresponding to our hypotheses.
-We will include journal as a random effect.
 
 ## Objective 3
 
