@@ -1,6 +1,7 @@
-# After checking if each paper should be included in the final dataset
-# this script combines papers to include into a single CSV file
-# for the next step of the analysis
+# 3. Combine papers to include into a single dataset
+
+# Take papers to include (`UsePaper` = 1) from each separate journal CSV
+# and combine them into a single CSV called `included_papers.csv`
 
 # Not possible to run this code with data included in the repository
 run_code <- FALSE

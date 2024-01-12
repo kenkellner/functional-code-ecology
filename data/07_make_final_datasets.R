@@ -1,6 +1,9 @@
+# 7. Make final datasets
+
 # This script does final clean up on the two datasets
 # (included papers and reproducible papers)
-# The outputs are the datasets included with this repository
+# The outputs are the datasets included with this repository,
+# included_papers_final.csv and reproducible_papers_final.csv
 
 # Not possible to run this script with the data provided in the repository
 run_code <- FALSE
@@ -11,7 +14,7 @@ if(run_code){
 incl <- read.csv("included_papers.csv")
 repr <- read.csv("reproducible_papers.csv")
 
-# Remove Doser papers
+# Remove Doser papers since he is a coauthor
 incl <- incl[!grepl("Doser", incl$Notes),]
 repr <- repr[!grepl("Doser", repr$Notes),]
 
@@ -25,7 +28,7 @@ for (i in 1:length(ID_repr)){
 }
 repr <- cbind(ID = ID_repr, repr)
 
-# Create validation dataset
+# Create validation dataset for 2nd author to review
 # Keep only papers that I could test
 set.seed(123)
 val <- repr[!is.na(repr$All_Code_Runs),]
@@ -47,7 +50,7 @@ incl$Notes <- NULL
 repr$Notes <- NULL
 repr$Problems <- NULL
 
-# write out
+# write out final data files
 write.csv(incl, "included_papers_final.csv", row.names=FALSE)
 write.csv(repr, "reproducible_papers_final.csv", row.names=FALSE)
 

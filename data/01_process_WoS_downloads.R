@@ -1,4 +1,6 @@
-# The goal of this file is to clean the raw download data from Web of Science 
+# 1. Process raw Web of Science Downloads
+
+# The goal of this file is to clean the raw download data (XLS) from Web of Science 
 # and create 10 new CSV files (one per journal) from which the final set of 
 # 50 candidate articles per journal will be selected
 # The original file downloads were .xls but they were converted first to .csv

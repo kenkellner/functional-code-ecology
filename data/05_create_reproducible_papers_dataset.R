@@ -1,5 +1,8 @@
-# This script subsets included papers to just papers that could
+# 5. Create reproducible papers dataset
+
+# This script subsets `included_papers.csv` to just papers that could
 # possibly be reproduced (i.e., all code and data are supposedly included)
+# The result is `reproducible_papers.csv`
 
 # Not possible to run this script with the data included in the repository
 run_code <- FALSE
