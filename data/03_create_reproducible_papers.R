@@ -1,4 +1,10 @@
-# Subset data to just papers that could be reproduced
+# This script subsets included papers to just papers that could
+# possibly be reproduced (i.e., all code and data are supposedly included)
+
+# Not possible to run this script with the data included in the repository
+run_code <- FALSE
+
+if(run_code){
 
 # Full set of included papers
 included <- read.csv("included_papers.csv")
@@ -48,5 +54,7 @@ repro$Other_Code_Error <- repro$Non_CRAN_Package <- NA
 repro$Notes <- NA
 
 write.csv(repro, "reproducible_papers.csv", row.names=FALSE)
+
+}
 
 # Now I go and run the code and fill in the blanks

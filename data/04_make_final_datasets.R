@@ -1,3 +1,12 @@
+# This script does final clean up on the two datasets
+# (included papers and reproducible papers)
+# The outputs are the datasets included with this repository
+
+# Not possible to run this script with the data provided in the repository
+run_code <- FALSE
+
+if(run_code){
+
 # Read in datasets
 incl <- read.csv("included_papers.csv")
 repr <- read.csv("reproducible_papers.csv")
@@ -41,3 +50,5 @@ repr$Problems <- NULL
 # write out
 write.csv(incl, "included_papers_final.csv", row.names=FALSE)
 write.csv(repr, "reproducible_papers_final.csv", row.names=FALSE)
+
+}

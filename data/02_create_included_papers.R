@@ -2,6 +2,11 @@
 # this script combines papers to include into a single CSV file
 # for the next step of the analysis
 
+# Not possible to run this code with data included in the repository
+run_code <- FALSE
+
+if(run_code){
+
 files <- paste0("check_for_inclusion/", list.files("check_for_inclusion"))
 
 cleaned <- lapply(files, read.csv)
@@ -39,3 +44,5 @@ cleaned$Notes <- NA
 
 # Save dataset
 write.csv(cleaned, "included_papers.csv", row.names=FALSE)
+
+}

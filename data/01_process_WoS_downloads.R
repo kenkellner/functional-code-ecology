@@ -3,6 +3,12 @@
 # 50 candidate articles per journal will be selected
 # The original file downloads were .xls but they were converted first to .csv
 
+# It is not possible to run this code without the raw WoS outputs which
+# are not included in this repository
+run_code <- FALSE
+
+if(run_code){
+
 raw_files <- paste0("WoS_downloads/", list.files("WoS_downloads"))
 
 # Do all files have the same header?
@@ -61,5 +67,7 @@ dir.create("check_for_inclusion")
 out <- lapply(split_by_journal, function(x){
          write.csv(x, paste0("check_for_inclusion/", gsub(" ", "_", x$Journal[1]), ".csv"))
 })
+
+}
 
 # Now I go through all the individual files and mark if the paper should be used (UsePaper)
