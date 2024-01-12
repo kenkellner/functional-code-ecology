@@ -8,9 +8,13 @@ texlive-latex-base texlive-fonts-recommended texlive-latex-recommended
 # Create a working directory
 WORKDIR /reproducible-analyses
 
-# Build html version of methods
-COPY methods methods
-RUN cd methods; make Reproducible_Analyses_Ecology_Methods.pdf
+# Build pregistration document
+COPY Makefile .
+COPY Reproducible_Analyses_Ecology_Pregistration.md .
+COPY power_analysis.R .
+COPY references.bib .
+COPY plos.csl .
+RUN make Reproducible_Analyses_Ecology_Pregistration.pdf
 
 # Default to bash terminal when running docker image
 CMD ["bash"]

@@ -14,6 +14,9 @@ if(run_code){
 incl <- read.csv("included_papers.csv")
 repr <- read.csv("reproducible_papers.csv")
 
+# Remove papers from reproducible_papers that didn't actually have code/data
+repr <- repr[is.na(repr$Possible_Reproduce) | repr$Possible_Reproduce == 1,]
+
 # Remove Doser papers since he is a coauthor
 incl <- incl[!grepl("Doser", incl$Notes),]
 repr <- repr[!grepl("Doser", repr$Notes),]
