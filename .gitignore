@@ -4,6 +4,7 @@
 *.png
 *.html
 *.docx
+*.tiff
 docker-output*
 library*
 WoS_downloads*
