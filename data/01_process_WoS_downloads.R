@@ -45,10 +45,10 @@ raw_data <- raw_data[new_order,]
 raw_data$PlantsOrAnimals <- NA
 raw_data$HierarchModel <- NA
 raw_data$UsesR <- NA
-raw_data$UseArticle <- NA
+raw_data$UsePaper <- NA
 
 # Re-organize columns
-raw_data <- raw_data[,c("DOI", "Journal", "Year", "PlantsOrAnimals", "HierarchModel", "UsesR", "UseArticle",
+raw_data <- raw_data[,c("DOI", "Journal", "Year", "PlantsOrAnimals", "HierarchModel", "UsesR", "UsePaper",
                         "Title", "Authors", "Volume", "StartPage", "EndPage")]
 
 # Split again by journal
@@ -61,3 +61,5 @@ dir.create("check_for_inclusion")
 out <- lapply(split_by_journal, function(x){
          write.csv(x, paste0("check_for_inclusion/", gsub(" ", "_", x$Journal[1]), ".csv"))
 })
+
+# Now I go through all the individual files and mark if the paper should be used (UsePaper)

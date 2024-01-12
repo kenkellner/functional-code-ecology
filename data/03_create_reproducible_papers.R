@@ -1,7 +1,7 @@
-# Subset data to just articles that could be reproduced
+# Subset data to just papers that could be reproduced
 
-# Full set of included articles
-included <- read.csv("included_articles.csv")
+# Full set of included papers
+included <- read.csv("included_papers.csv")
 
 # Have to have both data and code to reproduce
 could_repro <- included$All_Data & included$All_Code
@@ -16,7 +16,7 @@ keep_cols <- c("DOI", "Journal", "Year", "Appendix", "Dryad", "Zenodo",
 repro <- repro[, keep_cols]
 
 # New columns for next stage of data collection
-# Confirm that article is theoretically reproducible (i.e., data and code present)
+# Confirm that paper is theoretically reproducible (i.e., data and code present)
 # Just double checking the previous step
 repro$Possible_Reproduce <- NA
 # Code format(s)
@@ -41,7 +41,12 @@ repro$Runtime_Too_Long <- NA
 repro$Outputs_Match <- NA
 # Note problems with code, i.e. wrong version of packages, etc.
 repro$Problems <- NA
+# Specific problems
+repro$Depr_Packages <- repro$Miss_File <- repro$Miss_Library <- repro$Miss_Object
+repro$Other_Code_Error <- repro$Non_CRAN_Package <- NA
 # Other notes
 repro$Notes <- NA
 
-write.csv(repro, "reproducible_articles.csv", row.names=FALSE)
+write.csv(repro, "reproducible_papers.csv", row.names=FALSE)
+
+# Now I go and run the code and fill in the blanks

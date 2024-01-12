@@ -6,3 +6,4 @@
 *.docx
 docker-output*
 library*
+WoS_downloads*

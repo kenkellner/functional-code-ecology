@@ -1,5 +1,5 @@
-# After checking if each article should be included in the final dataset
-# this script combines articles to include into a single CSV file
+# After checking if each paper should be included in the final dataset
+# this script combines papers to include into a single CSV file
 # for the next step of the analysis
 
 files <- paste0("check_for_inclusion/", list.files("check_for_inclusion"))
@@ -7,16 +7,16 @@ files <- paste0("check_for_inclusion/", list.files("check_for_inclusion"))
 cleaned <- lapply(files, read.csv)
 cleaned <- do.call(rbind, cleaned)
 
-(tab <- table(cleaned$Journal, cleaned$UseArticle))
+(tab <- table(cleaned$Journal, cleaned$UsePaper))
 
 sum(tab[,2])
 
 # Remove Journal of Ecology
 cleaned <- cleaned[cleaned$Journal != "JOURNAL OF ECOLOGY",]
 
-# Keep only used articles
-cleaned <- cleaned[!is.na(cleaned$UseArticle),]
-cleaned <- cleaned[cleaned$UseArticle == 1,]
+# Keep only used papers
+cleaned <- cleaned[!is.na(cleaned$UsePaper),]
+cleaned <- cleaned[cleaned$UsePaper == 1,]
 
 # Simplify columns
 cleaned <- cleaned[,c("DOI","Journal","Year")]
@@ -38,4 +38,4 @@ cleaned$Model_Code_Only <- NA
 cleaned$Notes <- NA
 
 # Save dataset
-write.csv(cleaned, "included_articles.csv", row.names=FALSE)
+write.csv(cleaned, "included_papers.csv", row.names=FALSE)
