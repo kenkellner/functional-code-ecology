@@ -124,6 +124,22 @@ None of our Objective 2 predictions were supported based on the GLMM.
 The probability that a paper's code ran successfully was not related to number of code lines, number of libraries used, or code format (Table 2,  Figure 3).
 We did not compare commented and non-commented papers as originally planned, because the vast majority of papers (`r pct_com`%) had adequate comments.
 
+## Objective 3: Reproducibility
+
+```{r, echo = FALSE}
+n_long <- sum(repr$Runtime_Too_Long & repr$All_Code_Runs, na.rm=TRUE)
+pct_long <- round(n_long / n_func * 100)
+n_check <- sum(!is.na(repr$Outputs_Match))
+n_match <- sum(repr$Outputs_Match, na.rm = TRUE)
+pct_match <- round(n_match/n_check*100)
+```
+
+Of the `r n_func` papers with functional code, `r n_long` (`r pct_long`%) would have taken too long to fully run due to extensive simulations, MCMC iterations, etc. (Figure 1).
+That left `r n_check` papers that we could fully check for reproducibility.
+Of these, `r n_match` (`r pct_match`%) reproduced the results reported in the associated paper (Figure 1).
+Code from an additional 2 papers produced results similar to the text that probably would have matched if the code had set a random seed.
+Given this small sample size, we did not attempt to test our predictions for Objective 3 with this dataset.
+
 # Tables
 
 ### Table 1
