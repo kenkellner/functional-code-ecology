@@ -1,9 +1,26 @@
-library(lme4)
-library(DHARMa)
-library(sankey)
+---
+title: "How functional and reproducible is code shared by ecology papers?"
+author: |
+  | Kenneth F. Kellner
+  | Michigan State University
+date: \today
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}\singlespacing
+    - \usepackage[margin=1in]{geometry}
+---
 
-# Read in datasets-------------------------------------------------------------
+```{r, echo = FALSE}
+# Load libraries
+suppressMessages(library(lme4))
+suppressMessages(library(DHARMa))
+suppressMessages(library(sankey))
+suppressMessages(library(knitr))
+suppressMessages(library(rmarkdown))
+```
 
+```{r, echo=FALSE}
+# Read in datasets
 # Included papers
 incl <- read.csv("included_papers_final.csv")
 
@@ -15,9 +32,220 @@ incl <- merge(incl, jour, by = c("Journal", "Year"))
 
 # Potentially reproducible papers
 repr <- read.csv("reproducible_papers_final.csv")
+```
 
-# Figure 1 --------------------------------------------------------------------
-# Visualize results of data collection with a Sankey diagram
+# Results
+
+```{r, echo=FALSE}
+tabj <- table(incl$Journal)
+rng_j <- range(tabj)
+
+tab_y <- table(incl$Year)
+rng_y <- range(tab_y)
+
+n_incl <- nrow(incl)
+```
+
+We identified `r nrow(incl)+3` papers from `r length(tabj)` journals that met the inclusion criteria.
+*Journal of Ecology* was excluded from the final dataset because we found only 2 relevant papers.
+Three papers were excluded because they were written by a co-author of this study, resulting a final sample size of `r n_incl`.
+The mean number of papers per journal was `r round(mean(tabj))` and the range was `r paste0(rng_j[1], "—", rng_j[2])`.
+There were a similar number of papers from each year 2018—2022 (mean `r round(mean(tab_y))`, range `r paste0(rng_y[1], "—", rng_y[2])`).
+
+## Objective 1: Availability of code and data
+
+```{r, echo = FALSE}
+possible_reproduce <- incl$All_Data & incl$All_Code
+impl_repr <- sum(possible_reproduce)
+n_repr <- nrow(repr)
+stopifnot(impl_repr == n_repr)
+pct_repr <- round(n_repr / n_incl * 100)
+
+pct_appen <- round(mean(repr$Appendix)*100)
+pct_dryad <- round(mean(repr$Dryad)*100)
+pct_zenodo <- round(mean(repr$Zenodo)*100)
+
+not_incl <- incl[!possible_reproduce,]
+mc <- sum(not_incl$Model_Code_Only)
+ml <- sum(not_incl$Missing_Broken_Link)
+ma <- sum(not_incl$Missing_Appendix)
+
+tab_y <- table(incl$Year, possible_reproduce)
+pct_22 <- round(tab_y['2022','TRUE'] / rowSums(tab_y)['2022'] * 100)
+```
+
+Of these `r n_incl` papers, `r paste0(n_repr, " (", pct_repr, "%)")` made both data and code available and thus were potentially reproducible (Figure 1).
+The most common repositories used were paper appendices (`r paste0(pct_appen, "%")`), Zenodo (`r paste0(pct_zenodo, "%")`), and Dryad (`r paste0(pct_dryad, "%")`).
+Common data and code sharing problems (excluding not sharing code or data at all) included supplying only BUGS/Stan model code (`r mc` papers), missing or broken links to outside repositories (`r ml` papers), and missing or incomplete appendices referenced in the text (`r ma` papers).
+
+None of our Objective 1 predictions were supported based on the GLMM.
+The probability a paper had both data and code accessible did not differ based on code sharing policy, year, or journal impact factor (Table 1, Figure 1).
+
+## Objective 2: Code functionality
+
+```{r, echo=FALSE}
+n_excl <- sum(is.na(repr$All_Code_Runs))
+pct_excl <- round(n_excl/n_repr*100)
+n_func <- sum(repr$All_Code_Runs, na.rm=TRUE)
+n_kept <- n_repr - n_excl
+pct_func <- round(n_func / n_kept * 100)
+
+kept_sub <- repr[!is.na(repr$All_Code_Runs),]
+
+n_depr <- sum(kept_sub$Depr_Packages)
+n_file <- sum(kept_sub$Miss_File)
+n_obj <- sum(kept_sub$Miss_Object)
+n_lib <- sum(kept_sub$Miss_Library)
+
+pct_com <- round(mean(kept_sub$Commented, na.rm = TRUE) * 100)
+
+cl_mn <- round(mean(kept_sub$Code_Lines))
+cl_sd <- round(sd(kept_sub$Code_Lines))
+
+pkg_mn <- round(mean(kept_sub$Libraries))
+pkg_sd <- round(sd(kept_sub$Libraries))
+
+n_script <- sum(kept_sub$Script)
+pct_script <- round(n_script / n_kept * 100)
+
+n_mark <- sum(kept_sub$RMarkdown)
+pct_mark <- round(n_mark / n_kept * 100)
+```
+
+Of the `r n_repr` potentially reproducible papers, we excluded `r n_excl` (`r  pct_excl`%) from further analysis due to issues we blamed on ourselves (extremely long runtimes, RAM limitations, etc.)
+On average, papers shared `r cl_mn` ± `r cl_sd` (mean ± standard deviation)  lines of code and depended on `r pkg_mn` ± `r pkg_sd` R libraries.
+The majority (`r n_script`, `r pct_script`%) provided code primarily in R script format.
+Only a few papers used primarily R Markdown or similar tools (`r n_mark`, `r pct_mark`%).
+
+We were able to successfully execute all the provided code for `r n_func` of `r n_kept` papers (`r pct_func`%; Figure 1).
+The most common reasons that code failed to run (there could be multiple reasons) were missing or misnamed files (`r n_file` papers), reliance on deprecated R libraries (`r n_depr` papers), and missing R objects (`r n_obj` papers; Figure 1).
+
+None of our Objective 2 predictions were supported based on the GLMM.
+The probability that a paper's code ran successfully was not related to number of code lines, number of libraries used, or code format (Table 2,  Figure 3).
+We did not compare commented and non-commented papers as originally planned, because the vast majority of papers (`r pct_com`%) had adequate comments.
+
+# Tables
+
+### Table 1
+
+Estimates from from the generalized linear mixed model (GLMM) of probability a paper provided both code and data, as a function of journal code policy, year, and journal impact factor.
+Intercepts were random by journal.
+
+```{r, echo = FALSE}
+# Objective 1
+
+# Determine the proportion of papers for which it is possible to attempt to 
+# reproduce the results. That is, are both data and code for a given paper available?
+
+# Create Response variable
+# Are both data and code for a given paper available?
+incl$Data_and_Code <- as.numeric(incl$All_Data & incl$All_Code)
+
+# Predictions
+# 1. Papers in journals with data and code availability policies will be more 
+# likely to have code and data available
+# Covariate: Code_Required (implies data required also)
+# 2. Awareness of the importance of reproducibility has been increasing. 
+# Thus, year (2018-2022) will have a positive effect on availability of both data and code
+# Covariate: Year (standardized)
+# 3. Papers in higher-impact journals (as measured by impact factor) 
+# will be more likely to have code and data
+# Covariate: Impact_Factor
+
+# Fit global GLMM
+set.seed(123)
+mod1 <- lme4::glmer(Data_and_Code ~ Code_Required + scale(Year) + scale(Impact_Factor) + (1|Journal),
+                      family = binomial,      # logistic regression
+                      data = incl)
+
+sum1 <- as.data.frame(summary(mod1)$coefficients)
+low <- sum1$Estimate - 1.96*sum1$`Std. Error`
+up <- sum1$Estimate + 1.96*sum1$`Std. Error`
+sum1$`95% CI` <- paste0("(",round(low, 2), " — ", round(up, 2), ")")
+sum1$Parameter <- c("Intercept","Code required", "Year", "Impact factor")
+sum1 <- sum1[,c("Parameter","Estimate","95% CI")]
+sum1$Estimate <- round(sum1$Estimate, 2)
+rownames(sum1) <- NULL
+
+rand <- round(sqrt(lme4::VarCorr(mod1)$Journal[1]), 2)
+var1 <- data.frame(Parameter = "Journal SD", Estimate = rand, `95% CI` = "",
+                   check.names = FALSE)
+
+knitr::kable(rbind(sum1, var1))
+```
+
+### Table 2
+
+Estimates from from the generalized linear mixed model (GLMM) of probability a paper's code ran successfully, as a function of number of lines of code, number of R libraries required, and code format (relative to a reference level of R script).
+Intercepts were random by journal.
+
+```{r, echo = FALSE}
+# For papers with code and data available, are we able to successfully run the code?
+
+# Response variable
+#table(repr$All_Code_Runs)
+
+# Predictions
+# 1. We expect that the longer and more complex an analysis (as measured crudely 
+# in lines of code), the less likely we will be to run the code successfully. 
+# The more code you have, the more chances there are to introduce errors.
+# Covariate: Code_Lines
+# 2. Code that is adequately commented should be more likely to run successfully, 
+# since it may indicate that authors worked through the code carefully line by line 
+# and confirmed it did what it said it was doing.
+# Covariate: Commented
+# Almost all papers had a decent number of comments and we realized we
+# didn't have a good way of assessing these objectively, so we dropped this covariate
+# from the model before analysis
+#table(repr$Commented)
+# 3. The more outside libraries the code depends on, the less likely the code will be to run.
+# This includes all dependencies of libraries called in the script.
+# Covariate: Libraries
+# 4. Code provided in a format designed for reproducibility, such as Rmarkdown, 
+# will be more likely to run successfully than code in a text file (e.g., .R). 
+# Code in text files will be more likely to run than code shared in a PDF or Word document.
+# Create covariate
+code_format <- rep(NA, nrow(repr))
+code_format[repr$Word == 1 | repr$PDF == 1] <- "PDF/Word"
+code_format[repr$Script == 1] <- "R script"
+code_format[repr$RMarkdown == 1 | repr$Other == 1] <- "Rmd/other" # "Other" here is R package
+repr$Code_Format <- factor(code_format, levels=c("R script", "Rmd/other", "PDF/Word"))
+#table(repr$Code_Format)
+
+# Fit global GLMM
+set.seed(123)
+mod2 <- lme4::glmer(All_Code_Runs ~ scale(Code_Lines) + scale(Libraries) + Code_Format + (1|Journal),
+                      family = binomial,      # logistic regression
+                      data = repr)
+
+sum2 <- as.data.frame(summary(mod2)$coefficients)
+low <- sum2$Estimate - 1.96*sum2$`Std. Error`
+up <- sum2$Estimate + 1.96*sum2$`Std. Error`
+sum2$`95% CI` <- paste0("(",round(low, 2), " — ", round(up, 2), ")")
+sum2$Parameter <- c("Intercept","Code lines", "Libraries", "Rmd/other", "PDF/Word")
+sum2 <- sum2[,c("Parameter","Estimate","95% CI")]
+sum2$Estimate <- round(sum2$Estimate, 2)
+rownames(sum2) <- NULL
+
+rand2 <- round(sqrt(lme4::VarCorr(mod2)$Journal[1]), 2)
+var2 <- data.frame(Parameter = "Journal SD", Estimate = rand2, `95% CI` = "",
+                   check.names = FALSE)
+
+knitr::kable(rbind(sum2, var2))
+```
+
+\pagebreak
+
+
+# Figures
+
+### Figure 1
+
+Sankey diagram categorizing code availability and code execution status of papers included in the analysis.
+Node labels (and the number of papers at each node) are below the associated node.
+Green color indicates a positive outcome (code/data available, code runs) and yellow indicates a negative outcome (no code available, code does not run).
+
+```{r, echo = FALSE, message = FALSE, fig.height=7}
 
 # Set up first node and split
 all_papers <- nrow(incl)
@@ -98,45 +326,22 @@ nodes <- data.frame(id = c(all_papers_lab, code_and_data_lab,
 # Make plot input
 plot_input <- make_sankey(nodes = nodes, edges = all_splits)
 
+sankey(plot_input, mar = c(0, 3.2, 0, 4.2))
+
 tiff("Figure_1.tiff", height=7, width=7, units='in', res=300, compression='lzw')
 sankey(plot_input, mar = c(0, 3.2, 0, 4.2))
-dev.off()
+nul <- dev.off()
+```
 
+###  Figure 2
 
-# Objective 1 -----------------------------------------------------------------
-# Determine the proportion of papers for which it is possible to attempt to 
-# reproduce the results. That is, are both data and code for a given paper available?
+Effects of journal code policy (A), year (B), and impact factor (C) on proportion of papers that provided complete data and code.
+Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the GLMM for Objective 1.
+In panel C, the raw data points correspond to specific journals identified by acronyms.
 
-# Create Response variable
-# Are both data and code for a given paper available?
-incl$Data_and_Code <- as.numeric(incl$All_Data & incl$All_Code)
+```{r, echo = FALSE, fig.height=7}
 
-# Predictions
-# 1. Papers in journals with data and code availability policies will be more 
-# likely to have code and data available
-# Covariate: Code_Required (implies data required also)
-# 2. Awareness of the importance of reproducibility has been increasing. 
-# Thus, year (2018-2022) will have a positive effect on availability of both data and code
-# Covariate: Year (standardized)
-# 3. Papers in higher-impact journals (as measured by impact factor) 
-# will be more likely to have code and data
-# Covariate: Impact_Factor
-
-# Fit global GLMM
-set.seed(123)
-mod1 <- lme4::glmer(Data_and_Code ~ Code_Required + scale(Year) + scale(Impact_Factor) + (1|Journal),
-                      family = binomial,      # logistic regression
-                      data = incl)
-
-summary(mod1)
-
-res1 <- DHARMa::simulateResiduals(mod1)
-plot(res1)
-
-# Figure 2---------------------------------------------------------------------
-
-tiff("Figure_2.tiff", height=7, width=7, units='in', res=300,
-     compression='lzw')
+fig2 <- function(){
 
 par(mar=c(4,2,1,1), oma = c(1,3,0,0))
 layout(matrix(c(1, 2,
@@ -303,59 +508,26 @@ for (i in 1:length(xval)){
   segments(xval[i]-bw, low[i], xval[i]+bw, low[i])
   segments(xval[i]-bw, up[i], xval[i]+bw, up[i])
 }
+}
 
-dev.off()
+fig2()
 
-
-# Objective 2 -----------------------------------------------------------------
-# For papers with code and data available, are we able to successfully run the code?
-
-# Response variable
-table(repr$All_Code_Runs)
-
-# Predictions
-# 1. We expect that the longer and more complex an analysis (as measured crudely 
-# in lines of code), the less likely we will be to run the code successfully. 
-# The more code you have, the more chances there are to introduce errors.
-# Covariate: Code_Lines
-# 2. Code that is adequately commented should be more likely to run successfully, 
-# since it may indicate that authors worked through the code carefully line by line 
-# and confirmed it did what it said it was doing.
-# Covariate: Commented
-# Almost all papers had a decent number of comments and we realized we
-# didn't have a good way of assessing these objectively, so we dropped this covariate
-# from the model before analysis
-table(repr$Commented)
-# 3. The more outside libraries the code depends on, the less likely the code will be to run.
-# This includes all dependencies of libraries called in the script.
-# Covariate: Libraries
-# 4. Code provided in a format designed for reproducibility, such as Rmarkdown, 
-# will be more likely to run successfully than code in a text file (e.g., .R). 
-# Code in text files will be more likely to run than code shared in a PDF or Word document.
-# Create covariate
-code_format <- rep(NA, nrow(repr))
-code_format[repr$Word == 1 | repr$PDF == 1] <- "PDF/Word"
-code_format[repr$Script == 1] <- "R script"
-code_format[repr$RMarkdown == 1 | repr$Other == 1] <- "Rmd/other" # "Other" here is R package
-repr$Code_Format <- factor(code_format, levels=c("R script", "Rmd/other", "PDF/Word"))
-table(repr$Code_Format)
-
-# Fit global GLMM
-set.seed(123)
-mod2 <- lme4::glmer(All_Code_Runs ~ scale(Code_Lines) + scale(Libraries) + Code_Format + (1|Journal),
-                      family = binomial,      # logistic regression
-                      data = repr)
-
-summary(mod2)
-
-res2 <- DHARMa::simulateResiduals(mod2)
-
-plot(res2)
-
-# Figure 3---------------------------------------------------------------------
-
-tiff("Figure_3.tiff", height=3.5, width=7, units='in', res=300,
+tiff("Figure_2.tiff", height=7, width=7, units='in', res=300,
      compression='lzw')
+fig2()
+nul <- dev.off()
+```
+
+\pagebreak
+
+### Figure 3
+
+Effects of code lines (A), number of required R libraries (B), and code format (C) on proportion of papers for which provided code ran successfully.
+Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the GLMM for Objective 2.
+
+```{r, echo = FALSE, fig.height = 3.5, fig.width=7}
+
+fig3 <- function(){
 
 par(mar=c(4,2,1,1), oma = c(1,3,0,0), mfrow=c(1,3))
 
@@ -537,14 +709,34 @@ for (i in 1:3){
   segments(i+0.1-bw, up_fit[i], i+0.1+bw, up_fit[i], col='goldenrod')
 }
 
-dev.off()
+}
 
+fig3()
 
-# Objective 3 -----------------------------------------------------------------
-# For papers with running code, do the outputs match the results reported in the paper?
-# The sample size of papers that both (1) had running code and (2) didn't
-# take too long to run was only 10 - not enough to analyze.
-table(repr$All_Code_Runs, repr$Runtime_Too_Long)
+tiff("Figure_3.tiff", height=3.5, width=7, units='in', res=300,
+     compression='lzw')
+fig3()
+nul <- dev.off()
+```
 
-# Of these, 7/10 replicated
-mean(repr$Outputs_Match, na.rm = TRUE)
+\pagebreak
+
+# Supplementary Information
+
+# Figure S1
+
+Results of DHARMa residual tests for the Objective 1 GLMM.
+
+```{r, echo = FALSE}
+res1 <- DHARMa::simulateResiduals(mod1)
+plot(res1)
+```
+
+# Figure S2
+
+Results of DHARMa residual tests for the Objective 2 GLMM.
+
+```{r, echo = FALSE}
+res2 <- DHARMa::simulateResiduals(mod2)
+plot(res2)
+```
