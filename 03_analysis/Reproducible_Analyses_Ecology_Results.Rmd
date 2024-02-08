@@ -186,8 +186,11 @@ rownames(sum1) <- NULL
 rand <- round(sqrt(lme4::VarCorr(mod1)$Journal[1]), 2)
 var1 <- data.frame(Parameter = "Journal SD", Estimate = rand, `95% CI` = "",
                    check.names = FALSE)
+tab1 <- rbind(sum1, var1)
 
-knitr::kable(rbind(sum1, var1))
+knitr::kable(tab1)
+
+write.csv(tab1, "Table_1.csv", row.names=FALSE)
 ```
 
 ### Table 2
@@ -246,8 +249,10 @@ rownames(sum2) <- NULL
 rand2 <- round(sqrt(lme4::VarCorr(mod2)$Journal[1]), 2)
 var2 <- data.frame(Parameter = "Journal SD", Estimate = rand2, `95% CI` = "",
                    check.names = FALSE)
+tab2 <- rbind(sum2, var2)
 
-knitr::kable(rbind(sum2, var2))
+knitr::kable(tab2)
+write.csv(tab2, "Table_2.csv", row.names=FALSE)
 ```
 
 \pagebreak

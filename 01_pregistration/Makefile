@@ -1,6 +1,9 @@
 Reproducible_Analyses_Ecology_Pregistration.pdf: Reproducible_Analyses_Ecology_Pregistration.md plos.csl power_analysis.png references.bib
 	pandoc --filter pandoc-citeproc -o Reproducible_Analyses_Ecology_Pregistration.pdf Reproducible_Analyses_Ecology_Pregistration.md
 
+Reproducible_Analyses_Ecology_Pregistration.docx: Reproducible_Analyses_Ecology_Pregistration.md plos.csl power_analysis.png references.bib
+	pandoc --filter pandoc-citeproc -o Reproducible_Analyses_Ecology_Pregistration.docx Reproducible_Analyses_Ecology_Pregistration.md
+
 power_analysis.png: power_analysis.R
 	Rscript power_analysis.R
 
