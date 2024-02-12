@@ -44,6 +44,26 @@ val$Miss_Object <- val$Other_Code_Error <- val$Non_CRAN_Package <- val$Problems 
 val$Notes <- NA
 write.csv(val, "validation_dataset.csv", row.names=FALSE)
 
+# Correct issues found during validation
+# The following dataset contains Jeff's entered data
+val <- read.csv("validation-dataset-jwd.csv")
+repr_sub <- repr[repr$ID %in% val$ID,]
+cbind(original=repr_sub$All_Code_Runs, validation=val$All_Code_Runs)
+
+repr_sub[4,] # Validation is correct, this should be an object error
+repr$All_Code_Runs[repr$ID == repr_sub$ID[4]] <- 0
+repr$Miss_Object[repr$ID == repr_sub$ID[4]] <- 1
+
+repr_sub[10,] # After double-check, still doesn't work.
+# Problem is a missing .gri extension which raster doesn't pick up - version mismatch?
+
+repr_sub[20,] # Validation is correct, this should be marked as running code
+repr$All_Code_Runs[repr$ID == repr_sub$ID[20]] <- 1
+# However runtime is too long to check (ignoring authors' logical statements that exclude a bunch of code)
+repr$Runtime_Too_Long[repr$ID == repr_sub$ID[20]] <- 1
+repr$Other_Code_Error[repr$ID == repr_sub$ID[20]] <- 0
+repr$Problems[repr$ID == repr_sub$ID[20]] <- NA
+
 # Create final datasets
 # Remove DOIs
 incl$DOI <- NULL
