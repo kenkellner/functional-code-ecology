@@ -3,9 +3,10 @@ FROM rocker/r-ver:4.3.1
 
 # Install some linux libraries that R packages need
 RUN apt-get update && apt-get install -y pandoc pandoc-citeproc libxt6 \
-texlive-latex-base texlive-fonts-recommended texlive-latex-recommended
+#texlive-latex-base texlive-fonts-recommended texlive-latex-recommended \
+libglpk-dev
 
-RUN Rscript -e 'install.packages(c("lme4","DHARMa","sankey","rmarkdown"))'
+RUN Rscript -e 'install.packages(c("rstanarm","sankey","rmarkdown"))'
 
 # Create a working directory
 WORKDIR /reproducible-analyses
@@ -16,7 +17,7 @@ COPY Reproducible_Analyses_Ecology_Results.Rmd .
 COPY included_papers_final.csv .
 COPY journal_data.csv .
 COPY reproducible_papers_final.csv .
-RUN make Reproducible_Analyses_Ecology_Results.pdf
+RUN make Reproducible_Analyses_Ecology_Results.html
 
 # Default to bash terminal when running docker image
 CMD ["bash"]
