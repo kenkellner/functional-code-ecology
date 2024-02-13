@@ -68,13 +68,25 @@ repr$Problems[repr$ID == repr_sub$ID[20]] <- NA
 # Remove DOIs
 incl$DOI <- NULL
 repr$DOI <- NULL
+val$DOI <- NULL
+
 # Remove columns summarized elsewhere
 incl$Notes <- NULL
 repr$Notes <- NULL
+val$Notes <- NULL
 repr$Problems <- NULL
+val$Problems <- NULL
+
+# Clean up validation dataset for clarity
+names(val)[names(val) == "All_Code_Runs"] <- "All_Code_Runs_JWD"
+val$All_Code_Runs_KFK <- repr_sub$All_Code_Runs
+val$Validation_Notes <- NA
+val$Validation_Notes[c(4,10,20)] <- c("False negative", "Ignored, possibly R library issue",
+                                      "False positive")
 
 # write out final data files
 write.csv(incl, "included_papers_final.csv", row.names=FALSE)
 write.csv(repr, "reproducible_papers_final.csv", row.names=FALSE)
+write.csv(val, "validation_final.csv", row.names=FALSE)
 
 }
