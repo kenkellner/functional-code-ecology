@@ -17,6 +17,7 @@ COPY Reproducible_Analyses_Ecology_Results.Rmd .
 COPY included_papers_final.csv .
 COPY journal_data.csv .
 COPY reproducible_papers_final.csv .
+COPY validation_final.csv .
 RUN make Reproducible_Analyses_Ecology_Results.html
 
 # Default to bash terminal when running docker image

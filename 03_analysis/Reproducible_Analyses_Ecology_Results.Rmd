@@ -3,14 +3,17 @@ title: "How functional and reproducible is code shared by ecology papers?"
 author: |
   | Kenneth F. Kellner
   | Michigan State University
-date: \today
+date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
   html_document:
     mathjax: null
+    toc: true
+    toc_float: true
 ---
 
-```{r, echo = FALSE}
-# Load libraries
+# Required Libraries
+
+```{r}
 suppressMessages(library(rstanarm))
 suppressMessages(library(sankey))
 suppressMessages(library(knitr))
@@ -31,11 +34,14 @@ incl <- merge(incl, jour, by = c("Journal", "Year"))
 
 # Potentially reproducible papers
 repr <- read.csv("reproducible_papers_final.csv")
+
+# Validation information
+val <- read.csv("validation_final.csv")
 ```
 
 # Fit models
 
-## Model for Objective 1: Availability of code and data
+## Model for availability of code and data
 
 Determine the proportion of papers for which it is possible to attempt to reproduce the results. 
 That is, are both data and code for a given paper available?
@@ -78,7 +84,7 @@ rstanarm::pp_check(mod1)
 summary(mod1, probs = c(0.025, 0.975))
 ```
 
-## Model for Objective 2: code functionality
+## Model for code functionality
 
 For papers with code and data available, are we able to successfully run the code?
 
@@ -146,7 +152,7 @@ Three papers were excluded because they were written by a co-author of this stud
 The mean number of papers per journal was `r round(mean(tabj))` and the range was `r paste0(rng_j[1], "—", rng_j[2])`.
 There were a similar number of papers from each year 2018—2022 (mean `r round(mean(tab_y))`, range `r paste0(rng_y[1], "—", rng_y[2])`).
 
-## Objective 1: Availability of code and data
+## Data and code availability
 
 ```{r, echo = FALSE}
 possible_reproduce <- incl$All_Data & incl$All_Code
@@ -172,10 +178,10 @@ Of these `r n_incl` papers, `r paste0(n_repr, " (", pct_repr, "%)")` made both d
 The most common repositories used were paper appendices (`r paste0(pct_appen, "%")`), Zenodo (`r paste0(pct_zenodo, "%")`), and Dryad (`r paste0(pct_dryad, "%")`).
 Common data and code sharing problems (excluding not sharing code or data at all) included supplying only BUGS/Stan model code (`r mc` papers), missing or broken links to outside repositories (`r ml` papers), and missing or incomplete appendices referenced in the text (`r ma` papers).
 
-None of our Objective 1 predictions were supported based on the GLMM.
-The probability a paper had both data and code accessible did not differ based on code sharing policy, year, or journal impact factor (Table 1, Figure 1).
+There was a positive effect of year on the probability both code and data were available, though the 95% credible interval slightly overlapped 0 (Table 1, Figure 2).
+The probability a paper had both data and code accessible did not differ based on code sharing policy or journal impact factor (Table 1, Figure 2).
 
-## Objective 2: Code functionality
+## Code functionality
 
 ```{r, echo=FALSE}
 n_excl <- sum(is.na(repr$All_Code_Runs))
@@ -204,6 +210,21 @@ pct_script <- round(n_script / n_kept * 100)
 
 n_mark <- sum(kept_sub$RMarkdown)
 pct_mark <- round(n_mark / n_kept * 100)
+
+# Effect checks
+s2 <- as.data.frame(summary(mod2, probs=c(0.025,0.975)))
+code_lines <- s2["scale(Code_Lines)",]
+code_lines_neg <- code_lines$`2.5%` < 0 & code_lines$`97.5%` < 0
+stopifnot(code_lines_neg)
+code_lines_ef <- round(code_lines$mean, 2)
+code_lines_ci <- paste0(round(code_lines$`2.5%`, 2), " — ", round(code_lines$`97.5%`, 2))
+code_sd <- round(sd(repr$Code_Lines, na.rm=TRUE))
+nd <- data.frame(Code_Lines = c(mean(repr$Code_Lines, na.rm=TRUE), 
+                                mean(repr$Code_Lines, na.rm=TRUE) + sd(repr$Code_Lines, na.rm=TRUE)),
+                 Libraries = median(repr$Libraries, na.rm = TRUE),
+                 Code_Format = factor("R script", levels=levels(repr$Code_Format)))
+code_post <- posterior_epred(mod2, newdata=nd, re.form=NA)
+code_pr <- apply(code_post, 2, mean)
 ```
 
 Of the `r n_repr` potentially reproducible papers, we excluded `r n_excl` (`r  pct_excl`%) from further analysis due to issues we blamed on ourselves (extremely long runtimes, RAM limitations, etc.)
@@ -214,11 +235,11 @@ Only a few papers used primarily R Markdown or similar tools (`r n_mark`, `r pct
 We were able to successfully execute all the provided code for `r n_func` of `r n_kept` papers (`r pct_func`%; Figure 1).
 The most common reasons that code failed to run (there could be multiple reasons) were missing or misnamed files (`r n_file` papers), reliance on deprecated R libraries (`r n_depr` papers), and missing R objects (`r n_obj` papers; Figure 1).
 
-None of our Objective 2 predictions were supported based on the GLMM.
-The probability that a paper's code ran successfully was not related to number of code lines, number of libraries used, or code format (Table 2,  Figure 3).
-We did not compare commented and non-commented papers as originally planned, because the vast majority of papers (`r pct_com`%) had adequate comments.
+The number of lines of code had a negative effect on the probability a paper's code ran successfully, matching our prediction (Table 2, Figure 3).
+With other covariates held at median or reference levels, a paper with the mean number of lines of code (`r round(nd$Code_Lines[1])`) had a `r round(code_pr[1],2)` probability of the code running, while a paper with lines of code one standard deviation above the mean (`r round(nd$Code_Lines[2])`) had a `r round(code_pr[2],2)` probability of the code running.
+The probability that a paper's code ran successfully was not related to the number of libraries used or code format (Table 2,  Figure 3).
 
-## Objective 3: Reproducibility
+## Matching code output
 
 ```{r, echo = FALSE}
 n_long <- sum(repr$Runtime_Too_Long & repr$All_Code_Runs, na.rm=TRUE)
@@ -232,13 +253,27 @@ Of the `r n_func` papers with functional code, `r n_long` (`r pct_long`%) would 
 That left `r n_check` papers that we could fully check for reproducibility.
 Of these, `r n_match` (`r pct_match`%) reproduced the results reported in the associated paper (Figure 1).
 Code from an additional 2 papers produced results similar to the text that probably would have matched if the code had set a random seed.
-Given this small sample size, we did not attempt to test our predictions for Objective 3 with this dataset.
+Given this small sample size, we did not attempt to test our predictions for matching code output with this dataset.
+
+## Accuracy check
+
+```{r, echo = FALSE}
+nval <- nrow(val)
+non_match <- sum(grepl("False", val$Validation_Notes))
+stopifnot(non_match == 2)
+match_pct <- round((nval-non_match)/nval * 100)
+```
+
+Of the `r nval` papers for which two authors executed code, we found the same results for `r nval - non_match` papers (`r match_pct`%).
+One paper was a false positive (error reported when code actually ran) and one was a false negative (code reported running but actually had an error). 
+These papers were corrected in the final dataset used for analysis.
+One additional disagreement was likely due to differences in computing environment and was ignored.
 
 # Tables
 
 ### Table 1
 
-Estimates from from the generalized linear mixed model (GLMM) of probability a paper provided both code and data, as a function of journal code policy, year, and journal impact factor.
+Estimates from from the generalized linear mixed model of probability a paper provided both code and data, as a function of journal code policy, year, and journal impact factor.
 Intercepts were random by journal.
 
 ```{r, echo = FALSE}
@@ -258,7 +293,7 @@ write.csv(tab1, "Table_1.csv", row.names=FALSE)
 
 ### Table 2
 
-Estimates from from the generalized linear mixed model (GLMM) of probability a paper's code ran successfully, as a function of number of lines of code, number of R libraries required, and code format (relative to a reference level of R script).
+Estimates from from the generalized linear mixed model of probability a paper's code ran successfully, as a function of number of lines of code, number of R libraries required, and code format (relative to a reference level of R script).
 Intercepts were random by journal.
 
 ```{r, echo = FALSE}
@@ -377,7 +412,7 @@ nul <- dev.off()
 ###  Figure 2
 
 Effects of journal code policy (A), year (B), and impact factor (C) on proportion of papers that provided complete data and code.
-Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the GLMM for Objective 1.
+Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the model of data and code availability.
 In panel C, the raw data points correspond to specific journals identified by acronyms.
 
 ```{r, echo = FALSE, fig.height=7}
@@ -554,7 +589,7 @@ nul <- dev.off()
 ### Figure 3
 
 Effects of code lines (A), number of required R libraries (B), and code format (C) on proportion of papers for which provided code ran successfully.
-Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the GLMM for Objective 2.
+Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the model of code functionality.
 
 ```{r, echo = FALSE, fig.height = 3.5, fig.width=7}
 
@@ -737,4 +772,10 @@ tiff("Figure_3.tiff", height=3.5, width=7, units='in', res=300,
      compression='lzw')
 fig3()
 nul <- dev.off()
+```
+
+# Session Information
+
+```{r}
+sessionInfo()
 ```
