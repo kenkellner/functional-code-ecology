@@ -91,7 +91,7 @@ For papers with code and data available, are we able to successfully run the cod
 **Predictions:**
 
 1. We expect that the longer and more complex an analysis (as measured crudely in lines of code), the less likely we will be to run the code successfully. The more code you have, the more chances there are to introduce errors. Covariate: `Code_Lines`
-2. The more outside libraries the code depends on, the less likely the code will be to run. This includes all dependencies of libraries called in the script. Covariate: `Libraries`
+2. The more outside packages the code depends on, the less likely the code will be to run. This includes all dependencies of packages called in the script. Covariate: `Libraries`
 3. Code provided in a format designed for reproducibility, such as R markdown, will be more likely to run successfully than code in a text file (e.g., .R). Code in text files will be more likely to run than code shared in a PDF or Word document. Covariate: `Code_Format`
 
 ```{r}
@@ -172,13 +172,16 @@ ma <- sum(not_incl$Missing_Appendix)
 
 tab_y <- table(incl$Year, possible_reproduce)
 pct_22 <- round(tab_y['2022','TRUE'] / rowSums(tab_y)['2022'] * 100)
+
+year_post <- as.matrix(mod1)[,"scale(Year)"]
+pct_pos <- round(mean(year_post > 0)*100)
 ```
 
 Of these `r n_incl` papers, `r paste0(n_repr, " (", pct_repr, "%)")` made both data and code available and thus were potentially reproducible (Figure 1).
 The most common repositories used were paper appendices (`r paste0(pct_appen, "%")`), Zenodo (`r paste0(pct_zenodo, "%")`), and Dryad (`r paste0(pct_dryad, "%")`).
 Common data and code sharing problems (excluding not sharing code or data at all) included supplying only BUGS/Stan model code (`r mc` papers), missing or broken links to outside repositories (`r ml` papers), and missing or incomplete appendices referenced in the text (`r ma` papers).
 
-There was a positive effect of year on the probability both code and data were available, though the 95% credible interval slightly overlapped 0 (Table 1, Figure 2).
+There was a positive effect of year on the probability both code and data were available, with `r pct_pos`% of the posterior samples for the parameter greater than 0. However, the 95% credible interval slightly overlapped 0 (Table 1, Figure 2).
 The probability a paper had both data and code accessible did not differ based on code sharing policy or journal impact factor (Table 1, Figure 2).
 
 ## Code functionality
@@ -228,16 +231,16 @@ code_pr <- apply(code_post, 2, mean)
 ```
 
 Of the `r n_repr` potentially reproducible papers, we excluded `r n_excl` (`r  pct_excl`%) from further analysis due to issues we blamed on ourselves (extremely long runtimes, RAM limitations, etc.)
-On average, papers shared `r cl_mn` ± `r cl_sd` (mean ± standard deviation)  lines of code and depended on `r pkg_mn` ± `r pkg_sd` R libraries.
+On average, papers shared `r cl_mn` ± `r cl_sd` (mean ± standard deviation)  lines of code and depended on `r pkg_mn` ± `r pkg_sd` R packages.
 The majority (`r n_script`, `r pct_script`%) provided code primarily in R script format.
 Only a few papers used primarily R Markdown or similar tools (`r n_mark`, `r pct_mark`%).
 
 We were able to successfully execute all the provided code for `r n_func` of `r n_kept` papers (`r pct_func`%; Figure 1).
-The most common reasons that code failed to run (there could be multiple reasons) were missing or misnamed files (`r n_file` papers), reliance on deprecated R libraries (`r n_depr` papers), and missing R objects (`r n_obj` papers; Figure 1).
+The most common reasons that code failed to run (there could be multiple reasons) were missing or misnamed files (`r n_file` papers), reliance on deprecated R packages (`r n_depr` papers), and missing R objects (`r n_obj` papers; Figure 1).
 
 The number of lines of code had a negative effect on the probability a paper's code ran successfully, matching our prediction (Table 2, Figure 3).
 With other covariates held at median or reference levels, a paper with the mean number of lines of code (`r round(nd$Code_Lines[1])`) had a `r round(code_pr[1],2)` probability of the code running, while a paper with lines of code one standard deviation above the mean (`r round(nd$Code_Lines[2])`) had a `r round(code_pr[2],2)` probability of the code running.
-The probability that a paper's code ran successfully was not related to the number of libraries used or code format (Table 2,  Figure 3).
+The probability that a paper's code ran successfully was not related to the number of packages used or code format (Table 2,  Figure 3).
 
 ## Matching code output
 
@@ -293,7 +296,7 @@ write.csv(tab1, "Table_1.csv", row.names=FALSE)
 
 ### Table 2
 
-Estimates from from the generalized linear mixed model of probability a paper's code ran successfully, as a function of number of lines of code, number of R libraries required, and code format (relative to a reference level of R script).
+Estimates from from the generalized linear mixed model of probability a paper's code ran successfully, as a function of number of lines of code, number of R packages required, and code format (relative to a reference level of R script).
 Intercepts were random by journal.
 
 ```{r, echo = FALSE}
@@ -588,7 +591,7 @@ nul <- dev.off()
 
 ### Figure 3
 
-Effects of code lines (A), number of required R libraries (B), and code format (C) on proportion of papers for which provided code ran successfully.
+Effects of code lines (A), number of required R packages (B), and code format (C) on proportion of papers for which provided code ran successfully.
 Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the model of code functionality.
 
 ```{r, echo = FALSE, fig.height = 3.5, fig.width=7}
@@ -675,7 +678,7 @@ xpos <- 1:length(xval)
 # Raw data plot
 plot(xpos-0.1, p, ylim = c(0, 0.8), xlim = c(0.75, 4.25), pch=19,
      ylab="Prop. running code", cex=1.3, cex.lab=1.2,
-     xlab = "Library dependencies", xaxt='n')
+     xlab = "Package dependencies", xaxt='n')
 axis(1, at=xpos, labels=xval)
 
 text(1, 0.77, "B", cex=2)
