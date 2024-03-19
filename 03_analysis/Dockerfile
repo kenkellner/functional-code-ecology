@@ -13,12 +13,12 @@ WORKDIR /reproducible-analyses
 
 # Build results document
 COPY Makefile .
-COPY Reproducible_Analyses_Ecology_Results.Rmd .
+COPY Functional_Reproducible_Code_Ecology.Rmd .
 COPY included_papers_final.csv .
 COPY journal_data.csv .
 COPY reproducible_papers_final.csv .
 COPY validation_final.csv .
-RUN make Reproducible_Analyses_Ecology_Results.html
+RUN make Functional_Reproducible_Code_Ecology.html
 
 # Default to bash terminal when running docker image
 CMD ["bash"]

@@ -1,5 +1,5 @@
 ---
-title: "How functional and reproducible is code shared by ecology papers?"
+title: "Functional and Reproducible Code is Rare in Ecology Papers"
 author: |
   | Kenneth F. Kellner
   | Michigan State University
@@ -16,7 +16,6 @@ output:
 ```{r}
 suppressMessages(library(rstanarm))
 suppressMessages(library(sankey))
-suppressMessages(library(knitr))
 suppressMessages(library(rmarkdown))
 ```
 

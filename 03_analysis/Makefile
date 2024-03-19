@@ -1,5 +1,5 @@
-Reproducible_Analyses_Ecology_Results.html: Reproducible_Analyses_Ecology_Results.Rmd 
-	Rscript -e "rmarkdown::render('Reproducible_Analyses_Ecology_Results.Rmd')"
+Functional_Reproducible_Code_Ecology.html: Functional_Reproducible_Code_Ecology.Rmd 
+	Rscript -e "rmarkdown::render('Functional_Reproducible_Code_Ecology.Rmd')"
 
 clean:
 	rm -f *.tiff *.html *.pdf *.docx
@@ -8,7 +8,7 @@ clean:
 docker: 
 	sudo docker image build -t reproducible-analyses-results .
 	$(eval ID = $(shell docker create reproducible-analyses-results))
-	sudo docker cp $(ID):/reproducible-analyses/Reproducible_Analyses_Ecology_Results.html .
+	sudo docker cp $(ID):/reproducible-analyses/Functional_Reproducible_Code_Ecology.html .
 	sudo docker cp $(ID):/reproducible-analyses/Figure_1.tiff .
 	sudo docker cp $(ID):/reproducible-analyses/Figure_2.tiff .
 	sudo docker cp $(ID):/reproducible-analyses/Figure_3.tiff .
