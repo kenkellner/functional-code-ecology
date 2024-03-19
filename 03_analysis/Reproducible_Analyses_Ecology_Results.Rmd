@@ -444,7 +444,7 @@ axis(1, at = 1:2, labels = c("Not required", "Required"), cex.axis=1.2)
 legend('topright', legend = c("Raw data", "Model prediction"),
        lty = 1, col = c("black", "goldenrod"))
 
-text(0.7, 0.8, "A", cex=2)
+text(0.7, 0.8, "(a)", cex=2)
 
 mtext("Proportion papers with code and data, and 95% CI", side = 2, line = 1,
       outer = TRUE)
@@ -494,7 +494,7 @@ plot(yrs, p, ylim = c(0, 0.87), pch=19,
      ylab="Prop. with code and data", cex=1.3, cex.axis=1.2,
      xlab = "Year", xlim=c(2017.75, 2022.25), cex.lab=1.2)
 
-text(2018.25, 0.8, "B", cex=2)
+text(2018.25, 0.8, "(b)", cex=2)
 
 # Plot model predictions
 nd <- data.frame(Code_Required = 0, Year = 2018:2022, 
@@ -545,7 +545,7 @@ plot(if_data$Impact_Factor, p, ylim = c(0, 0.87), pch=19,
      xlab = "Journal impact factor", cex.lab = 1.2,
      xlim = c(min(if_data$Impact_Factor)-0.25, max(if_data$Impact_Factor)+0.25))
 
-text(2.2, 0.8, "C", cex=2)
+text(2.2, 0.8, "(c)", cex=2)
 
 # Plot model predictions
 if_range <- range(if_data$Impact_Factor)
@@ -626,7 +626,7 @@ axis(1, at=xpos, labels=xval)
 legend('topright', legend = c("Raw data", "Model prediction"),
        lty = 1, col = c("black", "goldenrod"))
 
-text(1, 0.77, "A", cex=2)
+text(1.2, 0.77, "(a)", cex=2)
 
 mtext("Prop. running code and 95% CI", side = 2, line = 1,
       outer = TRUE)
@@ -681,7 +681,7 @@ plot(xpos-0.1, p, ylim = c(0, 0.8), xlim = c(0.75, 4.25), pch=19,
      xlab = "Package dependencies", xaxt='n')
 axis(1, at=xpos, labels=xval)
 
-text(1, 0.77, "B", cex=2)
+text(1.15, 0.77, "(b)", cex=2)
 
 segments(xpos-0.1, low, xpos-0.1, up)
 bw <- 0.1
@@ -736,7 +736,7 @@ plot(xpos-0.1, p, ylim = c(0, 0.8), xlim = c(0.75, 3.25), pch=19,
      xlab = "Code format", xaxt='n')
 axis(1, at=xpos, labels=xval)
 
-text(1, 0.77, "C", cex=2)
+text(1, 0.77, "(c)", cex=2)
 
 segments(xpos-0.1, low, xpos-0.1, up)
 bw <- 0.05
