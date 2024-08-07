@@ -20,6 +20,12 @@ sum(tab[,2])
 # Remove Journal of Ecology
 cleaned <- cleaned[cleaned$Journal != "JOURNAL OF ECOLOGY",]
 
+# Save this intermediate step
+write.csv(cleaned, "all_papers_cleaned.csv", row.names=FALSE)
+
+# Check what percent of these used R
+round(mean(cleaned$UsesR, na.rm=TRUE)*100) # 79%
+
 # Keep only used papers
 cleaned <- cleaned[!is.na(cleaned$UsePaper),]
 cleaned <- cleaned[cleaned$UsePaper == 1,]

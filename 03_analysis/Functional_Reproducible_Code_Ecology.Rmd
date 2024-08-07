@@ -49,17 +49,25 @@ That is, are both data and code for a given paper available?
 
 1. Papers in journals with data and code availability policies will be more likely to have code and data available. Covariate: `Code_Required` (implies data required also)
 2. Awareness of the importance of reproducibility has been increasing. Thus, year (2018-2022) will have a positive effect on availability of both data and code. Covariate: `Year` (standardized)
-3. Papers in higher-impact journals (as measured by impact factor) will be more likely to have code and data. Covariate: `Impact_Factor`
+
+We originally included another prediction:
+
+* Papers in higher-impact journals (as measured by impact factor) will be more likely to have code and data. Covariate: `Impact_Factor`
+
+We removed this based on reviewer feedback.
 
 ```{r}
 # Create Response variable
 # Are both data and code for a given paper available?
 incl$Data_and_Code <- as.numeric(incl$All_Data & incl$All_Code)
 
+# Set 2018 as year 0 instead of scaling it
+incl$Year <- incl$Year - min(incl$Year, na.rm=TRUE)
+
 # Fit GLMM
 set.seed(123)
 mod1 <- rstanarm::stan_glmer(
-          Data_and_Code ~ Code_Required + scale(Year) + scale(Impact_Factor) + (1|Journal),
+          Data_and_Code ~ Code_Required + Year + (1|Journal),
           family = binomial, data = incl, 
           chains = 4, iter = 2000, refresh = 0)
 ```
@@ -93,6 +101,10 @@ For papers with code and data available, are we able to successfully run the cod
 2. The more outside packages the code depends on, the less likely the code will be to run. This includes all dependencies of packages called in the script. Covariate: `Libraries`
 3. Code provided in a format designed for reproducibility, such as R markdown, will be more likely to run successfully than code in a text file (e.g., .R). Code in text files will be more likely to run than code shared in a PDF or Word document. Covariate: `Code_Format`
 
+We added a 4th prediction based on reviewer feedback:
+
+4. There will be a positive effect of year on the probability a paper's code runs, potentially due to increasing awareness of good coding practices or higher journal standards.
+
 ```{r}
 # Response variable
 table(repr$All_Code_Runs)
@@ -103,12 +115,14 @@ code_format[repr$Word == 1 | repr$PDF == 1] <- "PDF/Word"
 code_format[repr$Script == 1] <- "R script"
 code_format[repr$RMarkdown == 1 | repr$Other == 1] <- "Rmd/other" # "Other" here is R package
 repr$Code_Format <- factor(code_format, levels=c("R script", "Rmd/other", "PDF/Word"))
+# Set year baseline to 2018
+repr$Year <- repr$Year - min(repr$Year)
 table(repr$Code_Format)
 
 # Fit GLMM
 set.seed(123)
 mod2 <- rstanarm::stan_glmer(
-          All_Code_Runs ~ scale(Code_Lines) + scale(Libraries) + Code_Format + (1|Journal),
+          All_Code_Runs ~ scale(Code_Lines) + scale(Libraries) + Code_Format + Year + (1|Journal),
           family = binomial, data = repr,
           chains = 4, iter = 2000, refresh = 0)
 ```
@@ -154,6 +168,14 @@ There were a similar number of papers from each year 2018—2022 (mean `r round(
 ## Data and code availability
 
 ```{r, echo = FALSE}
+n_data <- sum(incl$All_Data & !incl$All_Code)
+n_code <- sum(!incl$All_Data & incl$All_Code)
+neither <- sum(!incl$All_Data & !incl$All_Code)
+
+pct_data <- round((n_data/n_incl)*100)
+pct_code <- round((n_code/n_incl)*100)
+pct_neither <- round((neither/n_incl)*100)
+
 possible_reproduce <- incl$All_Data & incl$All_Code
 impl_repr <- sum(possible_reproduce)
 n_repr <- nrow(repr)
@@ -170,18 +192,24 @@ ml <- sum(not_incl$Missing_Broken_Link)
 ma <- sum(not_incl$Missing_Appendix)
 
 tab_y <- table(incl$Year, possible_reproduce)
-pct_22 <- round(tab_y['2022','TRUE'] / rowSums(tab_y)['2022'] * 100)
+# year 4 = 2022
+pct_22 <- round(tab_y['4','TRUE'] / rowSums(tab_y)['4'] * 100)
 
-year_post <- as.matrix(mod1)[,"scale(Year)"]
+year_post <- as.matrix(mod1)[,"Year"]
 pct_pos <- round(mean(year_post > 0)*100)
+
+year_ef <- round((exp(coef(mod1)$Journal$Year[1]) - 1) * 100)
+year_ci <- round((exp(quantile(year_post, c(0.025, 0.975))) - 1) * 100)
 ```
 
 Of these `r n_incl` papers, `r paste0(n_repr, " (", pct_repr, "%)")` made both data and code available and thus were potentially reproducible (Figure 1).
+Of the remainder, `r paste0(n_data, " (",pct_data,"%)")` had only data, `r paste0(n_code, " (",pct_code,"%)")` had only code, and `r paste0(neither, " (",pct_neither,"%)")` had neither data nor code.
 The most common repositories used were paper appendices (`r paste0(pct_appen, "%")`), Zenodo (`r paste0(pct_zenodo, "%")`), and Dryad (`r paste0(pct_dryad, "%")`).
 Common data and code sharing problems (excluding not sharing code or data at all) included supplying only BUGS/Stan model code (`r mc` papers), missing or broken links to outside repositories (`r ml` papers), and missing or incomplete appendices referenced in the text (`r ma` papers).
 
-There was a positive effect of year on the probability both code and data were available, with `r pct_pos`% of the posterior samples for the parameter greater than 0. However, the 95% credible interval slightly overlapped 0 (Table 1, Figure 2).
-The probability a paper had both data and code accessible did not differ based on code sharing policy or journal impact factor (Table 1, Figure 2).
+There was a positive effect of year on the probability both code and data were available, with `r pct_pos`% of the posterior samples for the parameter greater than 0. 
+A one-year increase in published date corresponded to a `r paste0(year_ef, "% (95% credible interval ", year_ci[1], "% - ", year_ci[2],"%)")` increase in the odds a paper had both code and data available (Table 1, Figure 2).
+The probability a paper had both data and code accessible did not differ based on code sharing policy (Table 1, Figure 2).
 
 ## Code functionality
 
@@ -224,9 +252,10 @@ code_sd <- round(sd(repr$Code_Lines, na.rm=TRUE))
 nd <- data.frame(Code_Lines = c(mean(repr$Code_Lines, na.rm=TRUE), 
                                 mean(repr$Code_Lines, na.rm=TRUE) + sd(repr$Code_Lines, na.rm=TRUE)),
                  Libraries = median(repr$Libraries, na.rm = TRUE),
-                 Code_Format = factor("R script", levels=levels(repr$Code_Format)))
+                 Code_Format = factor("R script", levels=levels(repr$Code_Format)),
+                 Year = median(repr$Year))
 code_post <- posterior_epred(mod2, newdata=nd, re.form=NA)
-code_pr <- apply(code_post, 2, mean)
+code_pr <- apply(code_post, 2, median)
 ```
 
 Of the `r n_repr` potentially reproducible papers, we excluded `r n_excl` (`r  pct_excl`%) from further analysis due to issues we blamed on ourselves (extremely long runtimes, RAM limitations, etc.)
@@ -239,9 +268,11 @@ The most common reasons that code failed to run (there could be multiple reasons
 
 The number of lines of code had a negative effect on the probability a paper's code ran successfully, matching our prediction (Table 2, Figure 3).
 With other covariates held at median or reference levels, a paper with the mean number of lines of code (`r round(nd$Code_Lines[1])`) had a `r round(code_pr[1],2)` probability of the code running, while a paper with lines of code one standard deviation above the mean (`r round(nd$Code_Lines[2])`) had a `r round(code_pr[2],2)` probability of the code running.
-The probability that a paper's code ran successfully was not related to the number of packages used or code format (Table 2,  Figure 3).
+The probability that a paper's code ran successfully was not related to the number of packages used, code format, or year (Table 2,  Figure 3).
 
 ## Matching code output
+
+Note: we did not include these results in the final version of the paper following reviewer feedback.
 
 ```{r, echo = FALSE}
 n_long <- sum(repr$Runtime_Too_Long & repr$All_Code_Runs, na.rm=TRUE)
@@ -275,15 +306,15 @@ One additional disagreement was likely due to differences in computing environme
 
 ### Table 1
 
-Estimates from from the generalized linear mixed model of probability a paper provided both code and data, as a function of journal code policy, year, and journal impact factor.
+Estimates from from the generalized linear mixed model of probability a paper provided both code and data, as a function of journal code policy and year.
 Intercepts were random by journal.
 
 ```{r, echo = FALSE}
 tab1 <- as.data.frame(summary(mod1, probs = c(0.025, 0.975)))
 tab1$`95% CI` <- paste0("(",round(tab1$`2.5%`, 2), " — ", round(tab1$`97.5%`, 2), ")")
 tab1 <- tab1[!grepl("b[", rownames(tab1), fixed=TRUE),]
-tab1 <- tab1[1:5,]
-tab1$Parameter <- c("Intercept","Code required", "Year", "Impact factor", "Journal SD")
+tab1 <- tab1[1:4,]
+tab1$Parameter <- c("Intercept","Code required", "Year", "Journal SD")
 tab1$Estimate <- round(tab1$mean, 2)
 tab1 <- tab1[,c("Parameter","Estimate","95% CI")]
 rownames(tab1) <- NULL
@@ -302,8 +333,8 @@ Intercepts were random by journal.
 tab2 <- as.data.frame(summary(mod2, probs = c(0.025, 0.975)))
 tab2$`95% CI` <- paste0("(",round(tab2$`2.5%`, 2), " — ", round(tab2$`97.5%`, 2), ")")
 tab2 <- tab2[!grepl("b[", rownames(tab2), fixed=TRUE),]
-tab2 <- tab2[1:6,]
-tab2$Parameter <- c("Intercept","Code lines", "Libraries", "Rmd/other", "PDF/Word", "Journal SD")
+tab2 <- tab2[1:7,]
+tab2$Parameter <- c("Intercept","Code lines", "Libraries", "Rmd/other", "PDF/Word", "Year", "Journal SD")
 tab2$Estimate <- round(tab2$mean, 2)
 tab2 <- tab2[,c("Parameter","Estimate","95% CI")]
 rownames(tab2) <- NULL
@@ -354,21 +385,6 @@ split2 <- data.frame(start_node = rep(code_and_data_lab, 3),
                      colorstyle = "col", col=c("forestgreen","goldenrod","gray"))
 
 # Set up third node and splits
-data_sub_coderuns <- repr[repr$All_Code_Runs==1 & !is.na(repr$All_Code_Runs),]
-
-too_long <- sum(data_sub_coderuns$Runtime_Too_Long)
-too_long_lab <- paste0("Runtime\ntoo long\n(", too_long, ")")
-reproduces <- sum(!is.na(data_sub_coderuns$Outputs_Match) & data_sub_coderuns$Outputs_Match==1)
-repro_lab <- paste0("Reproduces\n(", reproduces, ")")
-doesnt_reproduce <- code_runs - too_long - reproduces
-doesnt_repro_lab <- paste0("Doesn't\nreproduce\n(", doesnt_reproduce, ")")
-
-split3 <- data.frame(start_node = rep(code_runs_lab, 3),
-                     end_node = c(repro_lab, doesnt_repro_lab, too_long_lab),
-                     weight = c(reproduces, doesnt_reproduce, too_long),
-                     colorstyle = "col", col=c("forestgreen","goldenrod","gray"))
-
-# Set up fourth node and splits
 data_sub_norun <- repr[repr$All_Code_Runs==0 & !is.na(repr$All_Code_Runs),]
 
 dep_pkg <- sum(data_sub_norun$Depr_Packages == 1)
@@ -380,24 +396,23 @@ miss_obj_lab <- paste0("Missing R\nobject (", miss_obj, ")")
 other_error <- doesnt_run - dep_pkg - miss_file - miss_obj
 other_error_lab <- paste0("Other error\n(", other_error, ")")
 
-split4 <- data.frame(start_node = rep(doesnt_run_lab, 4),
+split3 <- data.frame(start_node = rep(doesnt_run_lab, 4),
                      end_node = c(dep_pkg_lab, miss_file_lab,
                                   miss_obj_lab, other_error_lab),
                      weight= c(dep_pkg, miss_file, miss_obj, other_error),
                      colorstyle = "col", col="goldenrod")
 
 # Combine everything
-all_splits <- rbind(split1, split2, split3, split4)
+all_splits <- rbind(split1, split2, split3)
 
 # Specify colors of nodes
 nodes <- data.frame(id = c(all_papers_lab, code_and_data_lab, 
                            inc_lab, code_runs_lab, doesnt_run_lab,
-                           other_issues_lab, repro_lab, doesnt_repro_lab,
-                           too_long_lab, dep_pkg_lab, miss_file_lab,
+                           other_issues_lab, 
+                           dep_pkg_lab, miss_file_lab,
                            miss_obj_lab, other_error_lab),
                     col = c("forestgreen", "forestgreen", "goldenrod", 
                             "forestgreen", "goldenrod", "gray",
-                            "forestgreen","goldenrod", "gray",
                             "goldenrod","goldenrod","goldenrod","goldenrod"),
                     cex=1.1, adjy=0.9)
 
@@ -413,9 +428,8 @@ nul <- dev.off()
 
 ###  Figure 2
 
-Effects of journal code policy (A), year (B), and impact factor (C) on proportion of papers that provided complete data and code.
+Effects of journal code policy (a), year (b), and journal (c) on proportion of papers that provided complete data and code.
 Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the model of data and code availability.
-In panel C, the raw data points correspond to specific journals identified by acronyms.
 
 ```{r, echo = FALSE, fig.height=7}
 
@@ -426,7 +440,7 @@ layout(matrix(c(1, 2,
                 3, 3), ncol=2, nrow=2, byrow=TRUE))
 
 # RHS formula
-form <- ~Code_Required + scale(Year) + scale(Impact_Factor)
+form <- ~Code_Required + scale(Year)
 
 # Code required plot
 # Calculate proportion for each code requirement option
@@ -449,8 +463,7 @@ mtext("Proportion papers with code and data, and 95% CI", side = 2, line = 1,
       outer = TRUE)
 
 # Plot model predictions
-nd <- data.frame(Code_Required = c(0, 1), Year = median(incl$Year), 
-                 Impact_Factor = median(incl$Impact_Factor))
+nd <- data.frame(Code_Required = c(0, 1), Year = median(incl$Year))
 
 pr_post <- rstanarm::posterior_epred(mod1, newdata = nd, re.form=NA)
 est <- apply(pr_post, 2, mean)
@@ -496,7 +509,7 @@ plot(yrs, p, ylim = c(0, 0.87), pch=19,
 text(2018.25, 0.8, "(b)", cex=2)
 
 # Plot model predictions
-nd <- data.frame(Code_Required = 0, Year = 2018:2022, 
+nd <- data.frame(Code_Required = 0, Year = 2018:2022 - 2018, 
                  Impact_Factor = median(incl$Impact_Factor))
 
 pr_post <- rstanarm::posterior_epred(mod1, newdata = nd, re.form=NA)
@@ -522,16 +535,10 @@ for (i in 1:5){
   segments(yrs[i]-bw, up[i], yrs[i]+bw, up[i])
 }
 
-# Impact factor effect plot
-
-# Calculate mean impact factor by journal
-if_data <- aggregate(jour, by = Impact_Factor~Journal, FUN = mean)
-if_data <- if_data[order(if_data$Impact_Factor),]
+# Journal plot
 
 # Calculate proportion for each journal
 tab_journ <- table(incl$Journal, incl$Data_and_Code)
-# Sort by impact factor
-tab_journ <- tab_journ[if_data$Journal,]
 nj <- nrow(tab_journ)
 n <- rowSums(tab_journ)
 p <- tab_journ[,2] / n
@@ -539,40 +546,45 @@ p <- tab_journ[,2] / n
 abbrev <- c("JWM","E&E","ECOS","PLOS","SREP","ECOL","BC","CB","MEE")
 
 # Plot raw data
-plot(if_data$Impact_Factor, p, ylim = c(0, 0.87), pch=19,
+plot(1:nj-0.1, p, ylim = c(0, 0.87), pch=19,
      ylab="Prop. with code and data", cex=1.3, cex.axis=1.2,
-     xlab = "Journal impact factor", cex.lab = 1.2,
-     xlim = c(min(if_data$Impact_Factor)-0.25, max(if_data$Impact_Factor)+0.25))
+     xlab = "Journal", cex.lab = 1.2,
+     xlim = c(0.5, nj+0.5), xaxt='n')
+axis(1, at=1:nj, labels=abbrev)
 
-text(2.2, 0.8, "(c)", cex=2)
+text(0.7, 0.8, "(c)", cex=2)
 
 # Plot model predictions
-if_range <- range(if_data$Impact_Factor)
-if_seq <- seq(if_range[1], if_range[2], length.out=100)
 nd <- data.frame(Code_Required = 0, Year = median(incl$Year), 
-                 Impact_Factor = if_seq)
+                 Journal = unique(incl$Journal))
 
-pr_post <- rstanarm::posterior_epred(mod1, newdata = nd, re.form=NA)
+pr_post <- rstanarm::posterior_epred(mod1, newdata = nd)
 est <- apply(pr_post, 2, mean)
 low_fit <- apply(pr_post, 2, quantile, 0.025)
 up_fit <- apply(pr_post, 2, quantile, 0.975)
 
-polygon(c(if_seq, rev(if_seq)), c(low_fit, rev(up_fit)), col='lightgoldenrod1', border=NA)
-lines(if_seq, est, lty = 2, col='goldenrod')
+# Plot model prediction
+points(1:nj+0.1, est, pch = 19, cex = 1.3, col='goldenrod')
+segments(1:nj+0.1, low_fit, 1:nj+0.1, up_fit, col='goldenrod')
+bw <- 0.1
+for (i in 1:nj){
+  segments(i+0.1-bw, low_fit[i], i+0.1+bw, low_fit[i], col='goldenrod')
+  segments(i+0.1-bw, up_fit[i], i+0.1+bw, up_fit[i], col='goldenrod')
+}
 
 # Re-plot raw data on top
-points(if_data$Impact_Factor, p, pch = 19, cex = 1.3)
+#points(1:nj, p, pch = 19, cex = 1.3)
 
 # Error  bars for raw data
 # 95% CI
-xval <- if_data$Impact_Factor
+xval <- 1:nj-0.1
 se <- sqrt((p*(1-p))/n)
 low <- p - 1.96*se
 up <- p + 1.96*se
 segments(xval, low, xval, up)
-bw <- 0.07
+bw <- 0.1
 for (i in 1:length(xval)){
-  text(xval[i], up[i] + 0.05, abbrev[i])
+  #text(xval[i], up[i] + 0.05, abbrev[i])
   segments(xval[i]-bw, low[i], xval[i]+bw, low[i])
   segments(xval[i]-bw, up[i], xval[i]+bw, up[i])
 }
@@ -590,16 +602,16 @@ nul <- dev.off()
 
 ### Figure 3
 
-Effects of code lines (A), number of required R packages (B), and code format (C) on proportion of papers for which provided code ran successfully.
+Effects of code lines (a), number of required R packages (b), code format (c), and year (d) on proportion of papers for which provided code ran successfully.
 Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the model of code functionality.
 
 ```{r, echo = FALSE, fig.height = 3.5, fig.width=7}
 
 fig3 <- function(){
 
-par(mar=c(4,2,1,1), oma = c(1,3,0,0), mfrow=c(1,3))
+par(mar=c(4,2,1,1), oma = c(1,3,0,0), mfrow=c(2,2))
 
-form <- ~scale(Code_Lines) + scale(Libraries) + Code_Format
+form <- ~scale(Code_Lines) + scale(Libraries) + Code_Format + Year
 
 # Code Lines plot
 line_cat <- cut(repr$Code_Lines, c(0, 1000, 2000, 3000, 4000, 50000),
@@ -643,7 +655,8 @@ for (i in 1:5){
 # Model prediction at midpoints of bins
 nd <- data.frame(Code_Lines = c(500, 1500, 2500, 3500, 4500),
                  Libraries = median(repr$Libraries, na.rm = TRUE),
-                 Code_Format = factor("R script", levels=levels(repr$Code_Format)))
+                 Code_Format = factor("R script", levels=levels(repr$Code_Format)),
+                 Year = median(repr$Year))
 
 pr_post <- rstanarm::posterior_epred(mod2, newdata = nd, re.form=NA)
 est <- apply(pr_post, 2, mean)
@@ -694,7 +707,8 @@ for (i in 1:5){
 # Model prediction at midpoints of bins
 nd <- data.frame(Code_Lines = median(repr$Code_Lines, na.rm = TRUE),
                  Libraries = c(25, 75, 125, 175),
-                 Code_Format = factor("R script", levels=levels(repr$Code_Format)))
+                 Code_Format = factor("R script", levels=levels(repr$Code_Format)),
+                 Year = median(repr$Year))
 
 pr_post <- rstanarm::posterior_epred(mod2, newdata = nd, re.form=NA)
 
@@ -750,7 +764,8 @@ for (i in 1:3){
 nd <- data.frame(Code_Lines = median(repr$Code_Lines, na.rm = TRUE),
                  Libraries = median(repr$Libraries, na.rm = TRUE),
                  Code_Format = factor(levels(repr$Code_Format),
-                                      levels = levels(repr$Code_Format)))
+                                      levels = levels(repr$Code_Format)),
+                 Year = median(repr$Year))
 
 pr_post <- rstanarm::posterior_epred(mod2, newdata = nd, re.form=NA)
 est <- apply(pr_post, 2, mean)
@@ -766,11 +781,56 @@ for (i in 1:3){
   segments(i+0.1-bw, up_fit[i], i+0.1+bw, up_fit[i], col='goldenrod')
 }
 
+# Year effect plot
+yrs <- 2018:2022
+
+# Calculate proportion in each year
+tab_year <- table(repr$Year, repr$All_Code_Runs)
+n <- rowSums(tab_year)
+p <- tab_year[,2] / n
+
+# Plot raw data
+plot(yrs, p, ylim = c(0, 0.8), pch=19,
+     ylab="", cex=1.3, cex.axis=1.2,
+     xlab = "Year", xlim=c(2017.75, 2022.25), cex.lab=1.2)
+
+text(2018.25, 0.77, "(d)", cex=2)
+
+# Plot model predictions
+nd <- data.frame(Code_Lines = median(repr$Code_Lines, na.rm = TRUE),
+                 Libraries = median(repr$Libraries, na.rm = TRUE),
+                 Code_Format = factor("R script", levels=levels(repr$Code_Format)),
+                 Year = yrs - 2018)
+
+pr_post <- rstanarm::posterior_epred(mod2, newdata = nd, re.form=NA)
+est <- apply(pr_post, 2, mean)
+low_fit <- apply(pr_post, 2, quantile, 0.025)
+up_fit <- apply(pr_post, 2, quantile, 0.975)
+
+polygon(c(yrs, rev(yrs)), c(low_fit, rev(up_fit)), col='lightgoldenrod1', border=NA)
+lines(yrs, est, lty = 2, col='goldenrod')
+
+# Re-plot raw data on top
+points(yrs, p, pch = 19, cex = 1.3)
+
+# Error  bars for raw data
+# 95% CI
+se <- sqrt((p*(1-p))/n)
+low <- p - 1.96*se
+up <- p + 1.96*se
+segments(yrs, low, yrs, up)
+bw <- 0.1
+for (i in 1:5){
+  segments(yrs[i]-bw, low[i], yrs[i]+bw, low[i])
+  segments(yrs[i]-bw, up[i], yrs[i]+bw, up[i])
+}
+
+
 }
 
 fig3()
 
-tiff("Figure_3.tiff", height=3.5, width=7, units='in', res=300,
+tiff("Figure_3.tiff", height=7, width=7, units='in', res=300,
      compression='lzw')
 fig3()
 nul <- dev.off()
