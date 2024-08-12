@@ -616,7 +616,7 @@ form <- ~scale(Code_Lines) + scale(Libraries) + Code_Format + Year
 # Code Lines plot
 line_cat <- cut(repr$Code_Lines, c(0, 1000, 2000, 3000, 4000, 50000),
                 labels = c("0-1k", "1k-2k", "2k-3k", "3k-4k",
-                           "4k+"))
+                           ">4k"))
 
 lintab <- table(line_cat, repr$All_Code_Runs)
 
@@ -674,7 +674,7 @@ for (i in 1:5){
 
 # Libraries
 lib_cat <- cut(repr$Libraries, c(0, 50, 100, 150, 1000),
-                labels = c("0-50", "51-100", "101-150", "150+"))
+                labels = c("0-50", "51-100", "101-150", ">150"))
 
 libtab <- table(lib_cat, repr$All_Code_Runs)
 
