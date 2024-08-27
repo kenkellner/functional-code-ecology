@@ -543,7 +543,7 @@ nj <- nrow(tab_journ)
 n <- rowSums(tab_journ)
 p <- tab_journ[,2] / n
 
-abbrev <- c("JWM","E&E","ECOS","PLOS","SREP","ECOL","BC","CB","MEE")
+abbrev <- c("BC", "CB", "ECOL", "E&E", "ECOS", "JWM", "MEE", "PLOS", "SREP")
 
 # Plot raw data
 plot(1:nj-0.1, p, ylim = c(0, 0.87), pch=19,
