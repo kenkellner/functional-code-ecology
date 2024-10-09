@@ -24,7 +24,11 @@ cleaned <- cleaned[cleaned$Journal != "JOURNAL OF ECOLOGY",]
 write.csv(cleaned, "all_papers_cleaned.csv", row.names=FALSE)
 
 # Check what percent of these used R
-round(mean(cleaned$UsesR, na.rm=TRUE)*100) # 79%
+# papers that met criteria 1&2 (a few were discarded for other reasons)
+checkR_papers <- !is.na(cleaned$HierarchModel) & cleaned$HierarchModel == 1 & 
+  !is.na(cleaned$PlantsOrAnimals) & cleaned$PlantsOrAnimals == 1
+round(mean(cleaned$UsesR[checkR_papers], na.rm=TRUE)*100) # 80%
+sum(!is.na(cleaned$UsesR[checkR_papers])) # 629
 
 # Keep only used papers
 cleaned <- cleaned[!is.na(cleaned$UsePaper),]
