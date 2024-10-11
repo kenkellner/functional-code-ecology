@@ -5,7 +5,6 @@
 # The outputs are the datasets included with this repository,
 # included_papers_final.csv and reproducible_papers_final.csv
 
-# Not possible to run this script with the data provided in the repository
 run_code <- FALSE
 
 if(run_code){

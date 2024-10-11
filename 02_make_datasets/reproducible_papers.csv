@@ -1,0 +1,160 @@
+DOI,Journal,Year,Appendix,Dryad,Zenodo,Figshare,OSF,Org_Database,Github,Other_Database,Other_Paper,Possible_Reproduce,Other,Word,PDF,RMarkdown,Script,Commented,Code_Lines,Libraries,Fixed_Filepaths,All_Code_Runs,Some_Code_Runs,Runtime_Too_Long,Outputs_Match,Depr_Packages,Miss_File,Miss_Library,Miss_Object,Other_Code_Error,Non_CRAN_Package,Problems,Notes
+10.1016/j.biocon.2022.109793,BIOLOGICAL CONSERVATION,2022,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,1254,94,0,0,1,NA,NA,1,0,0,0,0,0,Uses rgdal and rgeos (deprecated),NA
+10.1016/j.biocon.2022.109568,BIOLOGICAL CONSERVATION,2022,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1665,133,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data file (garbled by journal),NA
+10.1016/j.biocon.2021.109141,BIOLOGICAL CONSERVATION,2021,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,6563,77,0,0,1,NA,NA,1,1,0,0,0,0,Incorrect filepaths for output (path to model file incorrect in simulations run.model function) and  depends on rgdal and rgeos and maptools,NA
+10.1016/j.biocon.2019.108266,BIOLOGICAL CONSERVATION,2019,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,2275,63,0,1,0,0,0,0,0,0,0,0,0,Example NDVI figure generated does not match Fig. 3,Does model avging and hardcoded model weights in file
+10.1016/j.biocon.2020.108651,BIOLOGICAL CONSERVATION,2020,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,133,21,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data file (garbled by journal),NA
+10.1016/j.biocon.2022.109593,BIOLOGICAL CONSERVATION,2022,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,4084,186,0,1,0,0,1,0,0,0,0,0,0,NA,On google drive
+10.1016/j.biocon.2020.108762,BIOLOGICAL CONSERVATION,2020,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,1,181,10,0,0,0,NA,NA,0,1,1,0,0,0,Missing library calls and misnamed data files,NA
+10.1111/cobi.13686,CONSERVATION BIOLOGY,2021,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,257,30,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1111/cobi.13934,CONSERVATION BIOLOGY,2022,0,0,1,0,0,0,1,0,0,1,0,0,0,0,1,1,1677,135,1,0,1,NA,NA,0,0,0,1,0,0,Error in formatting data (missing object days),NA
+10.1002/ece3.9250,ECOLOGY AND EVOLUTION,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,3228,93,0,1,0,1,NA,0,0,0,0,0,0,NA,Apparently missing some models from paper
+10.1002/ece3.9328,ECOLOGY AND EVOLUTION,2022,0,0,0,1,0,0,1,0,0,1,0,0,0,0,1,0,2901,151,1,0,1,NA,NA,0,0,1,0,0,0,Missing function (didn’t specify library), not obvious order to run files in
+10.1002/ece3.9627,ECOLOGY AND EVOLUTION,2022,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,2196,121,1,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ece3.7142,ECOLOGY AND EVOLUTION,2021,0,1,0,0,0,0,1,0,0,1,0,0,0,1,1,1,20939,184,0,0,1,NA,NA,1,0,0,0,0,0,Uses rgdal (deprecated),NA
+10.1002/ece3.4825,ECOLOGY AND EVOLUTION,2019,1,0,0,0,0,1,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Only BUGS code
+10.1002/ece3.8270,ECOLOGY AND EVOLUTION,2021,0,1,1,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Only R function - got Open research badge without full code -   also uses deprecated maptools
+10.1002/ece3.8662,ECOLOGY AND EVOLUTION,2022,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1520,0,0,0,0,NA,NA,1,1,0,0,0,0,Filenames are wrong and garbled by upload?  also uses deprecated rgeos/rgdal,NA
+10.1002/ece3.8600,ECOLOGY AND EVOLUTION,2022,1,0,1,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Only example simulation code
+10.1002/ece3.7629,ECOLOGY AND EVOLUTION,2021,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,2246,140,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ece3.8934,ECOLOGY AND EVOLUTION,2022,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1605,10,0,0,1,1,NA,0,0,0,1,0,0,Misnamed variables,NA
+10.1002/ece3.9274,ECOLOGY AND EVOLUTION,2022,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,483,7,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ece3.3750,ECOLOGY AND EVOLUTION,2018,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,0,222,9,0,1,0,1,NA,0,0,0,0,0,0,NA,Windows required
+10.1002/ece3.8799,ECOLOGY AND EVOLUTION,2022,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,580,9,0,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,Model never finished compiling
+10.1002/ece3.7873,ECOLOGY AND EVOLUTION,2021,0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,739,35,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ece3.9104,ECOLOGY AND EVOLUTION,2022,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,866,60,1,0,1,NA,NA,0,0,0,0,1,0,Multinomial NA in probability vector in nonclosure function,NA
+10.1002/ece3.9173,ECOLOGY AND EVOLUTION,2022,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,5906,47,1,0,1,NA,NA,0,1,0,0,0,0,Misnamed data file,NA
+10.1002/ece3.4780,ECOLOGY AND EVOLUTION,2019,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,622,55,0,1,0,0,1,0,0,0,0,0,0,NA,NA
+10.1002/ece3.5975,ECOLOGY AND EVOLUTION,2020,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,1043,32,1,0,0,NA,NA,0,0,0,0,1,0,Error reading in data,NA
+10.1002/ece3.7091,ECOLOGY AND EVOLUTION,2021,1,0,0,0,0,0,0,0,1,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,No code for case study
+10.1002/ece3.5809,ECOLOGY AND EVOLUTION,2019,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1169,15,0,0,1,NA,NA,0,0,0,1,0,0,Case study code doesn’t load provided Rdata file,NA
+10.1002/ece3.4826,ECOLOGY AND EVOLUTION,2019,0,0,0,0,0,0,1,0,0,1,1,0,0,1,0,1,1126,74,0,1,0,0,1,0,0,0,0,0,0,NA,R package
+10.1002/ece3.6988,ECOLOGY AND EVOLUTION,2021,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,375,10,0,0,1,NA,NA,0,0,0,0,1,0,JAGS model doesn’t compile,NA
+10.1002/ece3.4751,ECOLOGY AND EVOLUTION,2019,0,1,0,0,0,0,0,0,0,1,0,1,1,0,0,1,338,8,0,0,0,NA,NA,0,0,0,0,1,0,Sourced instead of loaded an Rdata,NA
+10.1002/ece3.5551,ECOLOGY AND EVOLUTION,2019,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,4750,51,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ece3.6053,ECOLOGY AND EVOLUTION,2020,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,7957,159,0,0,1,NA,NA,0,1,0,0,0,0,Misnamed data file,NA
+10.1002/ece3.4431,ECOLOGY AND EVOLUTION,2018,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,250,17,0,0,1,NA,NA,0,0,0,1,0,0,Some model objects at end of each source file that don’t exist,Windows and MARK required
+10.1002/ece3.7604,ECOLOGY AND EVOLUTION,2021,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,551,1,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data file,NA
+10.1002/ece3.6797,ECOLOGY AND EVOLUTION,2020,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,53,43,0,0,0,NA,NA,1,0,0,0,0,0,Uses rgdal (deprecated),Also only low-res data (don’t think this is reported in the paper)
+10.1002/ece3.9140,ECOLOGY AND EVOLUTION,2022,0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1538,99,0,1,0,0,1,0,0,0,0,0,0,NA,Windows required
+10.1002/ece3.6990,ECOLOGY AND EVOLUTION,2020,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,124,41,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ece3.5077,ECOLOGY AND EVOLUTION,2019,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,684,62,0,0,0,NA,NA,0,1,0,0,0,1,Misnamed data file, package not on CRAN
+10.1002/ece3.9337,ECOLOGY AND EVOLUTION,2022,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,654,78,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ecy.3535,ECOLOGY,2021,0,0,1,0,0,0,0,0,0,1,0,0,0,1,1,1,2345,19,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data file (case-sensitive),NA
+10.1002/ecy.2538,ECOLOGY,2019,1,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,No code for actually running model in Data S1
+10.1002/ecy.3583,ECOLOGY,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,5524,13,1,0,1,1,NA,0,0,1,0,0,0,Missing library(lattice) call,NA
+10.1002/ecy.3769,ECOLOGY,2022,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,NA,745,53,1,0,1,NA,NA,0,0,0,0,1,0,Error in data processing -  object guild not found,NA
+10.1002/ecy.2438,ECOLOGY,2018,1,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Only BUGS code for case study
+10.1002/ecy.3832,ECOLOGY,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1628,166,0,1,0,0,1,0,0,0,0,0,0,NA,NA
+10.1002/ecy.3942,ECOLOGY,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1891,84,0,1,0,1,NA,0,0,0,0,0,0,NA,Looks like outputs would match if I ran full length sims
+10.1002/ecy.2166,ECOLOGY,2018,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,976,15,0,0,1,NA,NA,0,1,0,0,0,0,Case study data not provided in format matching what is in code,NA
+10.1002/ecy.2595,ECOLOGY,2019,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,657,10,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ecy.2703,ECOLOGY,2019,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,3576,66,0,0,0,NA,NA,1,0,0,0,0,0,Uses rgdal and rgeos and Kmisc (deprecated),NA
+10.1002/ecy.2759,ECOLOGY,2019,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,974,19,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ecy.2923,ECOLOGY,2020,1,0,0,0,0,0,0,0,1,1,0,0,1,0,0,1,841,42,0,1,0,0,0,0,0,0,0,0,0,No seed set so possibly not exactly reproducible?,NA
+10.1002/ecy.3241,ECOLOGY,2021,1,0,1,0,0,0,0,0,0,1,0,0,1,0,1,1,1479,13,0,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,Model never finished compiling in simulations,NA
+10.1002/ecy.2709,ECOLOGY,2019,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,795,13,1,0,1,1,NA,0,0,0,1,0,0,Missing object Y in example_model_fit.R,Windows required
+10.1002/ecy.3315,ECOLOGY,2021,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,5921,140,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Issues with output that are probably due to low number of iterations I ran,NA
+10.1002/ecy.3563,ECOLOGY,2022,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1935,136,0,0,0,NA,NA,1,0,0,0,0,0,Uses rgdal and rgeos and maptools (deprecated),NA
+10.1002/ecy.3300,ECOLOGY,2021,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1266,147,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Repeated R crashes (memory issue?),NA
+10.1002/ecy.3573,ECOLOGY,2022,1,0,1,0,0,0,0,0,1,1,0,0,0,0,1,1,827,45,0,0,0,NA,NA,0,1,0,0,0,0,Missing covariate data files and sourced R files,Simulations done in Julia -  i didn’t run these
+10.1002/ecy.2189,ECOLOGY,2018,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,663,23,0,0,0,NA,NA,0,1,0,0,0,0,Missing file extension for dem raster (is this a Windows thing?),NA
+10.1002/ecy.3059,ECOLOGY,2020,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,420,19,1,0,0,NA,NA,0,0,0,0,1,0,Doesn’t provide code to explicitly load in all the data (both CSVs and Rdata),NA
+10.1002/ecy.3772,ECOLOGY,2022,1,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1847,37,1,0,0,NA,NA,1,0,0,0,0,0,Uses rgdal (deprecated),Mixture of dryad and zenodo = annoying
+10.1002/ecy.3771,ECOLOGY,2022,0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1737,81,0,0,0,NA,NA,0,0,0,0,1,0,GDAL/proj error,NA
+10.1002/ecy.3204,ECOLOGY,2021,0,0,1,0,0,0,0,0,0,1,0,0,0,1,1,1,2793,63,0,0,0,NA,NA,1,0,0,0,0,0,Uses rgdal and RandomFields (deprecated),Used knitr::purl on appendix Rmds
+10.1002/ecy.3262,ECOLOGY,2021,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1509,158,0,0,0,NA,NA,1,0,0,0,0,1,Uses rgdal and NLMR (deprecated),Also uses off-cran package oSCR
+10.1002/ecs2.4232,ECOSPHERE,2022,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,954,72,0,0,1,NA,NA,0,0,0,1,0,0,Missing objects (commented out),Dont tell people to repeat code make a function and do it yourself
+10.1002/ecs2.3941,ECOSPHERE,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1033,147,1,0,1,NA,NA,0,0,0,1,0,1,Misnamed covariates object (?),Only ran code in 06_scripts/data_analysis -   uses package not on cran
+10.1002/ecs2.2756,ECOSPHERE,2019,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,926,59,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ecs2.3637,ECOSPHERE,2021,1,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Case study data missing
+10.1002/ecs2.2499,ECOSPHERE,2018,0,0,0,0,0,0,1,0,0,1,0,0,0,1,1,1,2540,138,0,0,0,NA,NA,0,0,0,0,1,0,Data processing problem, Tidyverse API change? Even docker doesn’t work -  Uses docker but pulls from latest tidyverse rocker
+10.1002/ecs2.2674,ECOSPHERE,2019,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1029,12,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1002/ecs2.3725,ECOSPHERE,2021,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1437,44,1,0,1,NA,NA,0,0,0,0,1,0,Error in data processing: negative length vectors not allowed,NA
+10.1002/ecs2.3886,ECOSPHERE,2021,0,0,0,1,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Depends on rgdal,No actual code to run JAGS models
+10.1002/ecs2.2384,ECOSPHERE,2018,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,880,26,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Model never finished compiling
+10.1002/ecs2.2291,ECOSPHERE,2018,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1477,144,0,0,1,NA,NA,0,0,0,0,1,0,Trivial code mistake double assignment arrow,NA
+10.1002/ecs2.2479,ECOSPHERE,2018,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,714,27,0,0,0,NA,NA,1,1,0,0,0,1,Misnamed data file and depends on deprecated rgdal/rgeos,Uses package not on CRAN
+10.1002/ecs2.3370,ECOSPHERE,2021,0,0,0,0,0,0,1,0,0,1,0,0,0,1,1,1,452,89,0,1,0,1,NA,0,0,0,0,0,0,NA,R package
+10.1002/ecs2.3499,ECOSPHERE,2021,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,331,38,0,0,1,NA,NA,0,0,0,1,0,0,Missing object,NA
+10.1002/ecs2.3666,ECOSPHERE,2021,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,508,9,0,0,0,NA,NA,0,0,0,1,0,0,Missing object and  also does not explicitly load Rdata,NA
+10.1002/ecs2.3101,ECOSPHERE,2020,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,139,8,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data file,NA
+10.1002/ecs2.4142,ECOSPHERE,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,2310,62,0,0,1,NA,NA,0,0,1,0,0,0,Doesnt load some required libraries specifically tidyverse stuff until later in script,NA
+10.1002/ecs2.2334,ECOSPHERE,2018,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,2132,21,0,0,1,NA,NA,0,1,0,0,1,0,Bracket mismatch in DATA_S1 and  misnamed data file in DATA_S4,NA
+10.1002/ecs2.3662,ECOSPHERE,2021,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,1942,10,0,0,1,NA,NA,0,1,0,0,0,0,Misnamed JAGS model file,NA
+10.1002/ecs2.4325,ECOSPHERE,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,4857,190,0,0,0,NA,NA,1,1,0,0,0,0,Missing script and  uses deprecated maptools,NA
+10.1002/ecs2.3172,ECOSPHERE,2020,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1867,21,0,1,0,1,NA,0,0,0,0,0,0,NA,Only partial code for scenarios
+10.1002/ecs2.3960,ECOSPHERE,2022,1,0,0,0,0,1,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Only JAGS code
+10.1002/ecs2.3810,ECOSPHERE,2021,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1090,10,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed model file,NA
+10.1002/ecs2.3381,ECOSPHERE,2021,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,911,52,1,1,0,1,NA,0,0,0,0,0,0,NA,Uses package not on CRAN
+10.1002/jwmg.22347,JOURNAL OF WILDLIFE MANAGEMENT,2022,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,130,85,0,1,0,1,NA,0,0,0,0,0,0,Had to create a directory,NA
+10.1002/jwmg.21970,JOURNAL OF WILDLIFE MANAGEMENT,2021,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,2191,17,0,0,0,NA,NA,1,0,0,0,0,0,Depends on rgeos (deprecated),NA
+10.1002/jwmg.22033,JOURNAL OF WILDLIFE MANAGEMENT,2021,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,395,16,0,0,1,NA,NA,0,0,0,0,1,0,Bug in initial value setup (missing comma),NA
+10.1002/jwmg.21507,JOURNAL OF WILDLIFE MANAGEMENT,2018,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,909,10,0,0,0,NA,NA,0,1,0,0,0,0,Incorrect data file name (garbled by journal),NA
+10.1002/jwmg.21675,JOURNAL OF WILDLIFE MANAGEMENT,2019,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1063,160,0,0,0,NA,NA,0,1,0,0,0,0,File extension of R file doesn’t match (lower case). Would probably run otherwise.,NA
+10.1002/jwmg.22252,JOURNAL OF WILDLIFE MANAGEMENT,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1118,173,0,0,0,NA,NA,0,1,0,0,0,0,Folder name and extensions of files don’t match (lower case),NA
+10.1002/jwmg.22280,JOURNAL OF WILDLIFE MANAGEMENT,2022,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,334,199,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Took too long to run even one iteration
+10.1002/jwmg.22057,JOURNAL OF WILDLIFE MANAGEMENT,2021,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,499,42,0,0,0,NA,NA,0,1,0,0,0,0,Missing raster data file (or wrong extension?),NA
+10.1002/jwmg.22233,JOURNAL OF WILDLIFE MANAGEMENT,2022,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,66,54,1,0,0,NA,NA,0,1,0,0,0,0,Incorrect data file name (garbled by journal),NA
+10.1111/2041-210X.13002,METHODS IN ECOLOGY AND EVOLUTION,2018,0,0,1,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,No code for case study
+10.1111/2041-210X.13895,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1278,10,1,0,1,NA,NA,0,1,0,0,0,0,Missing/misnamed R source file, instructions specify a specific one with different name from whats available -  Had to run code in specific order that was unclear 
+10.1111/2041-210X.13068,METHODS IN ECOLOGY AND EVOLUTION,2018,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,566,7,0,1,0,1,NA,0,0,0,0,0,0,NA,Provides example settings for quick run
+10.1111/2041-210X.13315,METHODS IN ECOLOGY AND EVOLUTION,2020,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,1,456,56,0,0,1,1,NA,0,0,1,0,0,0,Missing load of ggplot2 library,NA
+10.1111/2041-210X.12950,METHODS IN ECOLOGY AND EVOLUTION,2018,0,0,1,0,0,0,0,0,0,1,1,0,0,1,1,1,919,142,0,0,1,NA,NA,0,0,1,0,0,0,Missing load of parallel library,R package
+10.1111/2041-210X.13378,METHODS IN ECOLOGY AND EVOLUTION,2020,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1120,71,0,0,1,NA,NA,0,1,0,0,0,0,Missing or misnamed Rdata file, possibly misnamed as .R earlier in script?
+10.1111/2041-210X.13936,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,1,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,No case study code
+10.1111/2041-210X.13589,METHODS IN ECOLOGY AND EVOLUTION,2021,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,356,139,0,0,0,NA,NA,0,0,0,1,0,0,Missing multiprocess object, possibly a package version issue?
+10.1111/2041-210X.13897,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,1,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Hold out for now as it is a Doser paper
+10.1111/2041-210X.13192,METHODS IN ECOLOGY AND EVOLUTION,2019,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,744,10,0,0,1,NA,NA,0,0,0,0,1,0,Missing bracket,NA
+10.1111/2041-210X.13176,METHODS IN ECOLOGY AND EVOLUTION,2019,1,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,183,36,0,1,0,0,1,0,0,0,0,0,0,NA,"R package also, didn’t include those code lines in total"
+10.1111/2041-210X.13147,METHODS IN ECOLOGY AND EVOLUTION,2019,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,682,70,0,0,0,NA,NA,1,1,0,0,0,0,Misnamed data file -  missing projected raster file – uses Rgdal,NA
+10.1111/2041-210X.12983,METHODS IN ECOLOGY AND EVOLUTION,2018,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,865,83,0,0,1,NA,NA,0,1,0,0,0,0,Misnamed data file generated by appendix 2,NA
+10.1111/2041-210X.13825,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,2119,120,0,0,1,NA,NA,0,0,0,0,1,0,JAGS initial value for z is not numeric (it’s a data.frame),NA
+10.1111/2041-210X.13522,METHODS IN ECOLOGY AND EVOLUTION,2021,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,338,111,0,0,0,NA,NA,0,0,0,0,1,1,Error from cuerate.scr.fit() function,Uses package not on CRAN (ascr)
+10.1111/2041-210X.13195,METHODS IN ECOLOGY AND EVOLUTION,2019,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,3180,103,1,0,1,NA,NA,0,1,0,0,0,0,Misnamed output/RDS file and missing R scripts,NA
+10.1111/2041-210X.13442,METHODS IN ECOLOGY AND EVOLUTION,2020,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,1,273,45,0,1,0,1,NA,0,0,0,0,0,0,NA,Also uses package (msocc) -  code lines only include case study
+10.1111/2041-210X.13858,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,1,2226,127,0,0,1,1,NA,0,0,0,0,1,0,Figure code tries to use parameter that wasnt saved in JAGS output (psi),NA
+10.1111/2041-210X.13732,METHODS IN ECOLOGY AND EVOLUTION,2022,0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1160,51,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1111/2041-210X.14032,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1853,122,1,0,1,NA,NA,0,1,0,0,0,0,Missing sourced R script,NA
+10.1111/2041-210X.13030,METHODS IN ECOLOGY AND EVOLUTION,2018,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,118,10,1,1,0,1,NA,0,0,0,0,0,0,NA,provided low iteration settings for example
+10.1111/2041-210X.13905,METHODS IN ECOLOGY AND EVOLUTION,2022,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1307,26,0,0,0,NA,NA,0,0,0,1,0,0,Missing logit function in covariate scripts,Did not include python code in total line count
+10.1111/2041-210X.13517,METHODS IN ECOLOGY AND EVOLUTION,2021,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,3997,145,0,0,0,NA,NA,0,0,0,0,1,0,Included function SCRdesignEAenrm is run with incorrect arguments,NA
+10.1111/2041-210X.13117,METHODS IN ECOLOGY AND EVOLUTION,2019,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,2390,48,0,0,1,1,NA,0,0,0,0,1,0,"Source file containing function used in plot script not sourced, errors when sourced",This is somewhat borderline but no specific instructions given so im counting it a fail
+10.1111/2041-210X.13881,METHODS IN ECOLOGY AND EVOLUTION,2022,0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,7852,143,1,0,0,NA,NA,0,0,0,0,1,0,Wrong number of names assigned to object in parameter combo code,NA
+10.1111/2041-210X.13379,METHODS IN ECOLOGY AND EVOLUTION,2020,0,1,1,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Missing case study code
+10.1111/2041-210X.12951,METHODS IN ECOLOGY AND EVOLUTION,2018,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,239,14,0,0,0,NA,NA,0,1,0,0,0,0,All the raw data processing code is missing,NA
+10.1111/2041-210X.13896,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,0,0,0,0,1,0,0,1,NA,NA,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Couldnt get this to download -  files too big I think
+10.1111/2041-210X.12868,METHODS IN ECOLOGY AND EVOLUTION,2018,0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1925,45,1,0,0,NA,NA,0,1,0,0,0,0,Missing Cope...txt data file (doesn’t seem to match the Frogs.csv data file provided),NA
+10.1111/2041-210X.13014,METHODS IN ECOLOGY AND EVOLUTION,2018,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,1,47,27,0,1,0,0,1,0,0,0,0,0,0,NA,Code pulled directly from paper -  this is a package example paper
+10.1111/2041-210X.13811,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,1,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,0,0,0,0,0,0,NA,Skip because Doser is author
+10.1111/2041-210X.13158,METHODS IN ECOLOGY AND EVOLUTION,2019,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,338,18,0,0,0,NA,NA,1,0,0,0,0,0,Uses rgdal and rgeos  (deprecated),NA
+10.1111/2041-210X.13831,METHODS IN ECOLOGY AND EVOLUTION,2022,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,5959,172,0,0,0,NA,NA,0,0,0,0,1,0,"bcmaps::bc_bound(""sf"") errors; possibly due to package update",NA
+10.1111/2041-210X.13875,METHODS IN ECOLOGY AND EVOLUTION,2022,0,1,1,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Incomplete code for case study -  Stan model only
+10.1111/2041-210X.13578,METHODS IN ECOLOGY AND EVOLUTION,2021,0,0,1,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Skip because Doser is author
+10.1111/2041-210X.13993,METHODS IN ECOLOGY AND EVOLUTION,2022,0,1,1,0,0,0,0,0,0,1,0,0,0,1,0,0,815,157,1,0,1,NA,NA,0,0,0,1,0,0,Tries to plot using commented out object,Quarto
+10.1111/2041-210X.12895,METHODS IN ECOLOGY AND EVOLUTION,2018,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,2776,11,0,1,0,1,NA,0,0,0,0,0,0,NA,Provide settings for quick run
+10.1111/2041-210X.13576,METHODS IN ECOLOGY AND EVOLUTION,2021,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,1,2812,127,1,0,0,NA,NA,0,0,0,1,0,0,Code tries to use objects created in code that was commented out,NA
+10.1371/journal.pone.0215458,PLOS ONE,2019,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,985,181,0,1,0,1,NA,0,0,0,0,0,0,NA,Technically just example code
+10.1371/journal.pone.0191730,PLOS ONE,2018,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,766,60,0,0,1,NA,NA,0,1,0,0,0,0,Misnamed or missing Stan model file,NA
+10.1371/journal.pone.0241198,PLOS ONE,2020,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,3104,169,1,0,1,NA,NA,0,1,0,0,0,0,Complicated directory structure/creation problems beyond quick fix in make_parmfiles,NA
+10.1371/journal.pone.0240049,PLOS ONE,2020,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,585,2,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data file,NA
+10.1371/journal.pone.0208726,PLOS ONE,2018,1,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,NA,Missing case study code
+10.1371/journal.pone.0219244,PLOS ONE,2019,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,400,11,0,1,0,0,0,0,0,0,0,0,0,Outputs slightly (but not meaningfully) different – probably due to lack of seed setting,Provide package versions
+10.1371/journal.pone.0210878,PLOS ONE,2019,1,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,590,10,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data files, garbled by journal -  Possible to figure out the file names easily but need to stick to my strict rules about this
+10.1371/journal.pone.0245973,PLOS ONE,2021,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,483,39,0,0,1,NA,NA,0,1,0,0,0,0,Missing data file cells_regions_v2.txt, depends on deprecated rgdal but only in data processing code I didnt run -  Some data processing code does not run but since output files provided I skipped
+10.1371/journal.pone.0232013,PLOS ONE,2020,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,2018,206,1,0,0,NA,NA,1,1,0,0,0,0,Uses file.choose which is not a good idea, depends on rgdal
+10.1371/journal.pone.0215682,PLOS ONE,2019,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,1,197,14,0,0,0,NA,NA,0,0,0,1,0,0,Missing object yaug,NA
+10.1371/journal.pone.0236978,PLOS ONE,2020,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,28,48,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed or missing data files,NA
+10.1371/journal.pone.0252748,PLOS ONE,2021,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,838,21,0,0,1,NA,NA,0,1,0,0,0,0,Misnamed data file, garbled by journal
+10.1371/journal.pone.0231744,PLOS ONE,2020,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,269,25,0,1,0,1,NA,0,0,0,0,0,0,NA,NA
+10.1371/journal.pone.0236144,PLOS ONE,2020,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,156,15,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data files,NA
+10.1371/journal.pone.0266636,PLOS ONE,2022,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,816,105,1,0,1,NA,NA,0,0,0,1,0,0,Missing objects in post-processing stan output (italy),NA
+10.1371/journal.pone.0195311,PLOS ONE,2018,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,160,13,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data files, garbled by journal
+10.1038/s41598-020-77188-7,SCIENTIFIC REPORTS,2021,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,NA,NA,,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,NA,Huge files / download repeatedly failed
+10.1038/s41598-022-15694-6,SCIENTIFIC REPORTS,2022,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,3562,121,0,0,1,NA,NA,0,0,0,1,0,0,Missing objects in plot code,Also missing Rdata files loaded which I ignored
+10.1038/s41598-021-84010-5,SCIENTIFIC REPORTS,2021,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,108,84,0,0,1,1,NA,0,0,0,0,1,0,Bug in inserting sim output into results data frame,Probably not full code for paper
+10.1038/s41598-021-98100-x,SCIENTIFIC REPORTS,2021,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,354,56,0,0,0,NA,NA,0,1,0,0,0,0,Missing and/or misnamed data files,NA
+10.1038/s41598-022-21499-4,SCIENTIFIC REPORTS,2022,0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1049,71,0,0,0,NA,NA,0,1,0,0,0,0,Misnamed data file (missing underscores),NA
+10.1038/s41598-018-34824-7,SCIENTIFIC REPORTS,2018,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1390,10,0,0,1,1,NA,0,1,0,0,0,0,Misnamed data file (fairly obvious which one is correct),NA
+10.1038/s41598-019-52875-2,SCIENTIFIC REPORTS,2019,1,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,467,132,1,1,0,1,NA,0,0,0,0,0,0,NA,Capitalization problems in filepaths which I fixed since technically was a filepath problem
+10.1038/s41598-018-34936-0,SCIENTIFIC REPORTS,2018,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,NA,359,91,0,0,1,NA,NA,1,0,0,0,0,0,Depends on rgdal and maptools (deprecated),NA

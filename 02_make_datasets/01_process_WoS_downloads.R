@@ -5,12 +5,10 @@
 # 50 candidate articles per journal will be selected
 # The original file downloads were .xls but they were converted first to .csv
 
-# It is not possible to run this code without the raw WoS outputs which
-# are not included in this repository
 run_code <- FALSE
 
 if(run_code){
-
+# Before running this line you need to unzip WoS_downloads.zip to get these data
 raw_files <- paste0("WoS_downloads/", list.files("WoS_downloads"))
 
 # Do all files have the same header?

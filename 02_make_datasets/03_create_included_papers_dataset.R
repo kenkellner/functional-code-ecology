@@ -3,11 +3,12 @@
 # Take papers to include (`UsePaper` = 1) from each separate journal CSV
 # and combine them into a single CSV called `included_papers.csv`
 
-# Not possible to run this code with data included in the repository
 run_code <- FALSE
 
 if(run_code){
 
+# Before running this line you either need to run 01_process_WoS_downloads.R
+# or unzip check_for_inclusion.zip
 files <- paste0("check_for_inclusion/", list.files("check_for_inclusion"))
 
 cleaned <- lapply(files, read.csv)

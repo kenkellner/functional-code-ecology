@@ -4,7 +4,6 @@
 # possibly be reproduced (i.e., all code and data are supposedly included)
 # The result is `reproducible_papers.csv`
 
-# Not possible to run this script with the data included in the repository
 run_code <- FALSE
 
 if(run_code){
