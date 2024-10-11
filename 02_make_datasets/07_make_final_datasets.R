@@ -64,6 +64,10 @@ repr$Runtime_Too_Long[repr$ID == repr_sub$ID[20]] <- 1
 repr$Other_Code_Error[repr$ID == repr_sub$ID[20]] <- 0
 repr$Problems[repr$ID == repr_sub$ID[20]] <- NA
 
+# DOI refererence
+doi_ref <- incl[,c("ID", "DOI")]
+write.csv(doi_ref, "ID_to_DOI.csv", row.names=FALSE)
+
 # Create final datasets
 # Remove DOIs
 incl$DOI <- NULL
