@@ -161,7 +161,8 @@ n_incl <- nrow(incl)
 
 We identified `r nrow(incl)+3` papers from `r length(tabj)` journals that met the inclusion criteria.
 *Journal of Ecology* was excluded from the final dataset because we found only 2 relevant papers.
-Three papers were excluded because they were written by a co-author of this study, resulting a final sample size of `r n_incl`.
+We added additional papers from the remaining journals to reach 500 total.
+We excluded three papers written by a co-author of this study, resulting a final sample size of `r n_incl`.
 The mean number of papers per journal was `r round(mean(tabj))` and the range was `r paste0(rng_j[1], "—", rng_j[2])`.
 There were a similar number of papers from each year 2018—2022 (mean `r round(mean(tab_y))`, range `r paste0(rng_y[1], "—", rng_y[2])`).
 
@@ -204,12 +205,12 @@ year_ci <- round((exp(quantile(year_post, c(0.025, 0.975))) - 1) * 100)
 
 Of these `r n_incl` papers, `r paste0(n_repr, " (", pct_repr, "%)")` made both data and code available and thus were potentially reproducible (Figure 1).
 Of the remainder, `r paste0(n_data, " (",pct_data,"%)")` had only data, `r paste0(n_code, " (",pct_code,"%)")` had only code, and `r paste0(neither, " (",pct_neither,"%)")` had neither data nor code.
-The most common repositories used were paper appendices (`r paste0(pct_appen, "%")`), Zenodo (`r paste0(pct_zenodo, "%")`), and Dryad (`r paste0(pct_dryad, "%")`).
+Data and/or code were most commonly shared using paper appendices (`r paste0(pct_appen, "%")`), Zenodo (`r paste0(pct_zenodo, "%")`), and Dryad (`r paste0(pct_dryad, "%")`).
 Common data and code sharing problems (excluding not sharing code or data at all) included supplying only BUGS/Stan model code (`r mc` papers), missing or broken links to outside repositories (`r ml` papers), and missing or incomplete appendices referenced in the text (`r ma` papers).
 
 There was a positive effect of year on the probability both code and data were available, with `r pct_pos`% of the posterior samples for the parameter greater than 0. 
 A one-year increase in published date corresponded to a `r paste0(year_ef, "% (95% credible interval ", year_ci[1], "% - ", year_ci[2],"%)")` increase in the odds a paper had both code and data available (Table 1, Figure 2).
-The probability a paper had both data and code accessible did not differ based on code sharing policy (Table 1, Figure 2).
+The probability a paper had both data and code accessible did not differ based on code sharing policy.
 
 ## Code functionality
 
@@ -219,6 +220,8 @@ pct_excl <- round(n_excl/n_repr*100)
 n_func <- sum(repr$All_Code_Runs, na.rm=TRUE)
 n_kept <- n_repr - n_excl
 pct_func <- round(n_func / n_kept * 100)
+
+pct_all <- round(n_func / nrow(incl) * 100)
 
 kept_sub <- repr[!is.na(repr$All_Code_Runs),]
 
@@ -258,17 +261,17 @@ code_post <- posterior_epred(mod2, newdata=nd, re.form=NA)
 code_pr <- apply(code_post, 2, median)
 ```
 
-Of the `r n_repr` potentially reproducible papers, we excluded `r n_excl` (`r  pct_excl`%) from further analysis due to issues we blamed on ourselves (extremely long runtimes, RAM limitations, etc.)
+Of the `r n_repr` potentially reproducible papers, we excluded `r n_excl` (`r  pct_excl`%) from further analysis due to computer limitations (extremely long runtimes, RAM limitations, etc.)
 On average, papers shared `r cl_mn` ± `r cl_sd` (mean ± standard deviation)  lines of code and depended on `r pkg_mn` ± `r pkg_sd` R packages.
-The majority (`r n_script`, `r pct_script`%) provided code primarily in R script format.
-Only a few papers used primarily R Markdown or similar tools (`r n_mark`, `r pct_mark`%).
+Most papers (`r n_script`, `r pct_script`%) provided code primarily in R script format.
+and `r n_mark` (`r pct_mark`%) used primarily R Markdown or R packages.
 
-We were able to successfully execute all the provided code for `r n_func` of `r n_kept` papers (`r pct_func`%; Figure 1).
+We were able to successfully execute all the provided code for `r n_func` of `r n_kept` papers (`r pct_func`% of potentially reproducible papers, `r pct_all`% of all papers; Figure 1).
 The most common reasons that code failed to run (there could be multiple reasons) were missing or misnamed files (`r n_file` papers), reliance on deprecated R packages (`r n_depr` papers), and missing R objects (`r n_obj` papers; Figure 1).
 
 The number of lines of code had a negative effect on the probability a paper's code ran successfully, matching our prediction (Table 2, Figure 3).
 With other covariates held at median or reference levels, a paper with the mean number of lines of code (`r round(nd$Code_Lines[1])`) had a `r round(code_pr[1],2)` probability of the code running, while a paper with lines of code one standard deviation above the mean (`r round(nd$Code_Lines[2])`) had a `r round(code_pr[2],2)` probability of the code running.
-The probability that a paper's code ran successfully was not related to the number of packages used, code format, or year (Table 2,  Figure 3).
+The probability that a paper's code ran successfully was not related to the number of packages used, code format, or year.
 
 ## Matching code output
 
@@ -306,7 +309,7 @@ One additional disagreement was likely due to differences in computing environme
 
 ### Table 1
 
-Estimates from from the generalized linear mixed model of probability a paper provided both code and data, as a function of journal code policy and year.
+Estimates from from the generalized linear mixed model of probability a paper provided both code and data, as a function of journal code policy and publication year.
 Intercepts were random by journal.
 
 ```{r, echo = FALSE}
@@ -326,7 +329,7 @@ write.csv(tab1, "Table_1.csv", row.names=FALSE)
 
 ### Table 2
 
-Estimates from from the generalized linear mixed model of probability a paper's code ran successfully, as a function of number of lines of code, number of R packages required, and code format (relative to a reference level of R script).
+Estimates from from the generalized linear mixed model of probability a paper's code ran successfully, as a function of number of lines of code, number of R packages required, code format (relative to a reference level of R script), and year.
 Intercepts were random by journal.
 
 ```{r, echo = FALSE}
@@ -350,9 +353,10 @@ write.csv(tab2, "Table_2.csv", row.names=FALSE)
 
 ### Figure 1
 
-Sankey diagram categorizing code availability and code execution status of papers included in the analysis.
+Sankey diagram categorizing code availability and code functionality for papers included in the analysis.
 Node labels (and the number of papers at each node) are below the associated node.
-Green color indicates a positive outcome (code/data available, code runs) and yellow indicates a negative outcome (no code available, code does not run).
+Green color indicates a positive outcome (code and data available, code runs) and yellow indicates a negative outcome (code unavailable, code does not run).
+Note that papers could have multiple reasons for why the code didn't run and only the first reason is reflected in this diagram.
 
 ```{r, echo = FALSE, message = FALSE, fig.height=7}
 
@@ -429,7 +433,8 @@ nul <- dev.off()
 ###  Figure 2
 
 Effects of journal code policy (a), year (b), and journal (c) on proportion of papers that provided complete data and code.
-Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the model of data and code availability.
+Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions (posterior mean and 95% credible interval) from the regression model.
+In panel c, acronyms correspond to journals as follows: Biological Conservation (BC), Conservation Biology (CB), Ecology (ECOL), Ecology and Evolution (E&E), Ecosphere (ECOS), Journal of Wildlife Management (JWM), Methods in Ecology and Evolution (MEE), PLoS ONE (PLOS), and Scientific Reports (SREP).
 
 ```{r, echo = FALSE, fig.height=7}
 
@@ -602,10 +607,11 @@ nul <- dev.off()
 
 ### Figure 3
 
-Effects of code lines (a), number of required R packages (b), code format (c), and year (d) on proportion of papers for which provided code ran successfully.
-Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions from the model of code functionality.
+Effects of number of code lines (a), number of required R packages (b), code format (c), and year (d) on proportion of papers for which provided code ran successfully.
+Black points and lines represent estimates and 95% confidence intervals based on the raw data, and gold represents predictions (posterior means and 95% credible intervals) from the regression model.
+In panels a and b, corresponding model predictions were calculated using midpoints of binned data on the x-axis.
 
-```{r, echo = FALSE, fig.height = 3.5, fig.width=7}
+```{r, echo = FALSE, fig.height = 7, fig.width=7}
 
 fig3 <- function(){
 
